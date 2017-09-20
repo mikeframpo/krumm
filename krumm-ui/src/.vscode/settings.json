@@ -1,0 +1,9 @@
+{
+    "files.exclude": {
+        "**/.git": true,
+        "app/*.js": true,
+        "app/*.js.map": true
+    },
+
+    "editor.tabSize": 2
+}
