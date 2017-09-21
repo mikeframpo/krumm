@@ -1,0 +1,53 @@
+h1 {
+  font-family: 'Libre Baskerville', 'Lora', 'Calisto MT',
+               'Bookman Old Style', Bookman, 'Goudy Old Style',
+               Garamond, 'Hoefler Text', 'Bitstream Charter',
+               Georgia, serif;
+  color: #7A200D;
+  font-weight: 700;
+  margin: 0px;
+  font-size: 23px;
+  letter-spacing: 1px;
+  font-variant: small-caps;
+}
+
+h2 {
+  font-weight: normal;
+  font-style: italic;
+  font-size: 12px;
+  margin: 0;
+}
+
+#content-wrap {
+  font-family: 'Noto Sans', 'Myriad Pro', Calibri, Helvetica, Arial,
+                sans-serif;
+  font-size: 13.5px;
+  background: #FDF1DC;
+  padding: 0.6em;
+  padding-bottom: 0.5em;
+  border: 1px #DDD solid;
+  box-shadow: 0 0 1.5em #867453;
+
+  /* We don't want the box-shadow in front of the bar divs. */
+  position: relative;
+  z-index: 0;
+
+  /* Leaving room for the two bars to protrude outwards */
+  margin-left: 2px;
+  margin-right: 2px;
+
+  /* This is possibly overriden by next CSS rule. */
+  width: 400px;
+
+  -webkit-columns: 400px;
+     -moz-columns: 400px;
+          columns: 400px;
+  -webkit-column-gap: 40px;
+     -moz-column-gap: 40px;
+          column-gap: 40px;
+
+  /* When height is constrained, we want sequential filling of columns. */
+  -webkit-column-fill: auto;
+     -moz-column-fill: auto;
+          column-fill: auto;
+}
