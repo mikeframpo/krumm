@@ -1,6 +1,45 @@
-<div id="content-wrap">
+<div class="container" id="content-wrap">
+  <input value="{{creep.name}}" class="col creep-name {{getEditStyle()}}"
+          [disabled]="!editable" />
+  <input value="{{creep.type}}" class="col creep-type {{getEditStyle()}}"
+          [disabled]="!editable" />
+  <svg class="creep-divider" height="5" width="400">
+      <polyline points="0,0 400,2.5 0,5"/>
+  </svg>
   <div>
-    <h1>{{creep.name}}</h1>
-    <h2>{{creep.type}}<span>, {{creep.alignment}}</span></h2>
+    <h4>Armor Class</h4>
+    <input value="{{creep.ac}}" class="creep-trait-value {{getEditStyle()}}"
+            [disabled]="!editable" />
   </div>
+  <div>
+    <h4>Hit Points</h4>
+    <input value="{{creep.hp}}" class="creep-trait-value {{getEditStyle()}}"
+            [disabled]="!editable" />
+  </div>
+  <div>
+    <h4>Speed</h4>
+    <input value="{{creep.speed}}" class="creep-trait-value {{getEditStyle()}}"
+            [disabled]="!editable" />
+  </div>
+  <svg class="creep-divider" height="5" width="400">
+      <polyline points="0,0 400,2.5 0,5"/>
+  </svg>
+  <table>
+    <tbody>
+      <tr>
+        <th *ngFor="let statName of getStatNames()">{{statName}}</th>
+      </tr>
+      <tr>
+        <td *ngFor="let stat of getStats()">
+          <input value="{{stat}}" class="{{getEditStyle()}}" [disabled]="!editable" />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <svg class="creep-divider" height="5" width="400">
+      <polyline points="0,0 400,2.5 0,5"/>
+  </svg>
+</div>
+<div class="container">
+    <button type="button" class="btn" (click)="toggleEditable()">Toggle editable</button>
 </div>
