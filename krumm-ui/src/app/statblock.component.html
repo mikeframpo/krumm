@@ -1,4 +1,4 @@
-<div class="container" id="content-wrap">
+<div *ngIf="creep" class="container" id="content-wrap">
   <input value="{{creep.name}}" class="col creep-name {{getEditStyle()}}"
           [disabled]="!editable" />
   <input value="{{creep.type}}" class="col creep-type {{getEditStyle()}}"
@@ -8,12 +8,12 @@
   </svg>
   <div>
     <h4>Armor Class</h4>
-    <input value="{{creep.ac}}" class="creep-trait-value {{getEditStyle()}}"
+    <input id="abcded" value="{{creep.armor_class}}" class="creep-trait-value {{getEditStyle()}}"
             [disabled]="!editable" />
   </div>
   <div>
     <h4>Hit Points</h4>
-    <input value="{{creep.hp}}" class="creep-trait-value {{getEditStyle()}}"
+    <input value="{{creep.hit_points}}" class="creep-trait-value {{getEditStyle()}}"
             [disabled]="!editable" />
   </div>
   <div>

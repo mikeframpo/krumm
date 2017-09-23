@@ -1,9 +1,29 @@
 
 export class Creep {
-  name: string = 'Animated Armor';
-  type: string = 'Medium construct, unaligned';
-  ac: string = '18 (natural armor)';
-  hp: string = '33 (6d8 + 6)';
-  speed: string = '25ft';
-  stats: number[] = [14, 11, 13, 1, 3, 1];
+  name: string;
+  size: string;
+  type: string;
+  subtype: string;
+  alignment: string;
+  armor_class: number;
+  hit_points: number;
+  hit_dice: string;
+  speed: string;
+  strength: number;
+  dexterity: number;
+  constitution: number;
+  intelligence: number;
+  wisdom: number;
+  charisma: number;
+  stealth: number;
+  damage_vulnerabilities: string;
+  damage_resistances: string;
+  damage_immunities: string;
+  condition_immunities: string;
+  senses: string;
+  languages: string;
+  challenge_rating: string;
+  special_abilities: Object[];
+  actions: Object[];
 }
+

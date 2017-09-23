@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { Statblock } from './statblock.component';
+import { CreepService } from './creep.service';
 
 @NgModule({
   declarations: [
@@ -12,7 +13,7 @@ import { Statblock } from './statblock.component';
   imports: [
     BrowserModule
   ],
-  providers: [],
+  providers: [CreepService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
