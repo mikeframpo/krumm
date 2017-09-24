@@ -14,25 +14,13 @@ const statNames: string[] = ['STR', 'DEX', 'CON', 'INT', 'WIS', 'CHA'];
 })
 export class Statblock implements OnInit {
 
+  creep: Creep;
+
   constructor(private creepService: CreepService) { }
 
   ngOnInit(): void {
     this.creepService.getCreep(-1)
       .then(creep => this.creep = creep);
-  }
-
-  editable: boolean = false;
-  creep: Creep;
-
-  getEditStyle(): string {
-    if (this.editable) {
-      return "";
-    }
-    return noEditStyle;
-  }
-
-  toggleEditable(): void {
-    this.editable = !this.editable;
   }
 
   getStatNames(): string[] {
@@ -50,5 +38,13 @@ export class Statblock implements OnInit {
     ]
     return stats.map(
       item => item.toString() + '(' + getStatModLookup(item) + ')');
+  }
+
+  // cache the value
+  skills: string[] = null;
+
+  getSkills(): string[] {
+    //TODO: load from the known skills
+    return this.skills;
   }
 }
