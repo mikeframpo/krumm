@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 
 import { Creep } from './creep';
-import { getStatModLookup } from "./stats";
+import { getStatModLookup, skillNames } from "./stats";
 import { CreepService } from "./creep.service";
 
 const noEditStyle: string = "creep-field-noedit";
@@ -43,8 +43,23 @@ export class Statblock implements OnInit {
   // cache the value
   skills: string[] = null;
 
+  private toTitleCase(str: string): string {
+    return str[0].toUpperCase() + str.slice(1);
+  }
+
   getSkills(): string[] {
-    //TODO: load from the known skills
+    if (!this.skills) {
+      let skills = [];
+      for (let skillName of skillNames) {
+        if (this.creep[skillName]) {
+          skills.push({
+            name: this.toTitleCase(skillName),
+            val: '+' + String(this.creep[skillName])
+          });
+        }
+      }
+      this.skills = skills;
+    }
     return this.skills;
   }
 }

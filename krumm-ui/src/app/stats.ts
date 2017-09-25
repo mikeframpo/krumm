@@ -35,3 +35,24 @@ const statModLookup = {
 export function getStatModLookup(stat: number): string {
   return statModLookup[stat];
 }
+
+export const skillNames: string[] = [
+  'acrobatics',
+  'animal_handling',
+  'arcana',
+  'athletics',
+  'deception',
+  'history',
+  'insight',
+  'intimidation',
+  'investigation',
+  'medicine',
+  'nature',
+  'perception',
+  'performance',
+  'persuasion',
+  'religion',
+  'sleight_of_hand',
+  'stealth',
+  'survival'
+]

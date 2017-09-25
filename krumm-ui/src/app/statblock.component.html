@@ -15,6 +15,7 @@
   <div>
     <h4>Hit Points</h4>
     <span>{{creep.hit_points}}</span>
+    <span> ({{creep.hit_dice}})</span>
   </div>
   <div>
     <h4>Speed</h4>
@@ -29,24 +30,27 @@
         <th *ngFor="let statName of getStatNames()">{{statName}}</th>
       </tr>
       <tr>
-        <td *ngFor="let stat of getStats()">{{stat}}</td>
+        <td *ngFor="let stat of getStats()" class="creep-stat-val">{{stat}}</td>
       </tr>
     </tbody>
   </table>
   <svg class="creep-divider" height="5" width="400">
       <polyline points="0,0 400,2.5 0,5"/>
   </svg>
-  <div *ngIf="getSkills()">
+  <div>
     <h4>Skills</h4>
-    <span>{{getSkills()}}</span>
+    <span *ngFor="let skill of getSkills(); let isLast = last">
+      {{skill.name}} {{skill.val}}<span *ngIf="!isLast">,</span>
+    </span>
   </div>
   <div *ngIf="creep.senses">
     <h4>Senses</h4>
     <span>{{creep.senses}}</span>
   </div>
-  <div *ngIf="creep.languages">
+  <div>
     <h4>Languages</h4>
-    <span>{{creep.languages}}</span>
+    <span *ngIf="creep.languages;else elseBlock">{{creep.languages}}</span>
+    <ng-template #elseBlock>-</ng-template>
   </div>
   <div *ngIf="creep.challenge_rating">
     <h4>Challenge</h4>
@@ -55,17 +59,19 @@
   <svg class="creep-divider" height="5" width="400">
       <polyline points="0,0 400,2.5 0,5"/>
   </svg>
-  <div>
-    <div *ngFor="let ability of creep.special_abilities">
-      <h4>{{ability.name}}</h4>
-      {{ability.desc}}
+  <div id="abilities-and-actions">
+    <div>
+      <div *ngFor="let ability of creep.special_abilities">
+        <h4>{{ability.name}}</h4>
+        {{ability.desc}}
+      </div>
     </div>
-  </div>
-  <h3>Actions</h3>
-  <div>
-    <div *ngFor="let action of creep.actions">
-      <h4>{{action.name}}</h4>
-      {{action.desc}}
+    <h3>Actions</h3>
+    <div>
+      <div *ngFor="let action of creep.actions">
+        <h4>{{action.name}}</h4>
+        {{action.desc}}
+      </div>
     </div>
   </div>
 </div>

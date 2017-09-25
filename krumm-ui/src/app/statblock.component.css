@@ -3,39 +3,38 @@
   font-family: 'Noto Sans', 'Myriad Pro', Calibri, Helvetica, Arial,
                 sans-serif;
   font-size: 13.5px;
+  color: #7A200D;
   background: #FDF1DC;
-  /* padding: 0.6em; */
-  /* padding-bottom: 0.5em; */
+  padding: 0.6em;
+  padding-bottom: 0.5em;
   border: 1px #DDD solid;
   box-shadow: 0 0 1.5em #867453;
 
   /* We don't want the box-shadow in front of the bar divs. */
-  /* position: relative; */
-  /* z-index: 0; */
+  position: relative;
+  z-index: 0;
 
   /* Leaving room for the two bars to protrude outwards */
-  /* margin-left: 2px; */
-  /* margin-right: 2px; */
+  margin-left: 2px;
+  margin-right: 2px;
 
   /* This is possibly overriden by next CSS rule. */
-  /* width: 400px; */
+  width: 400px;
 
-  /* -webkit-columns: 400px;
+  /* Ignore bootstrap's box-sizing inheritance */
+  box-sizing: content-box;
+
+  -webkit-columns: 400px;
      -moz-columns: 400px;
           columns: 400px;
   -webkit-column-gap: 40px;
      -moz-column-gap: 40px;
-          column-gap: 40px; */
+          column-gap: 40px;
 
   /* When height is constrained, we want sequential filling of columns. */
-  /* -webkit-column-fill: auto;
+  -webkit-column-fill: auto;
      -moz-column-fill: auto;
-          column-fill: auto; */
-}
-
-.creep-field-noedit {
-  background: transparent;
-  border: none;
+          column-fill: auto;
 }
 
 .creep-name {
@@ -43,7 +42,6 @@
                'Bookman Old Style', Bookman, 'Goudy Old Style',
                Garamond, 'Hoefler Text', 'Bitstream Charter',
                Georgia, serif;
-  color: #7A200D;
   font-weight: 700;
   margin: 0px;
   font-size: 23px;
@@ -56,7 +54,7 @@
   color: #000;
   font-style: italic;
   font-size: 12px;
-  margin: 0;
+  margin: 0px;
   display: inline-block;
 
 }
@@ -69,24 +67,11 @@
   margin-bottom: 0.35em;
 }
 
-.creep-trait-value {
-  text-indent: 0;
-  margin: 0;
-  font-weight: normal;
-  color: #7A200D;
-}
-
 #content-wrap h4 {
   margin: 0;
   display: inline;
   font-weight: bold;
   font-size: 100%;    /* Ignore bootstrap's sizing */
-  color: #7A200D;
-}
-
-#content-wrap > p {
-  text-indent: 1em;
-  margin: 0;
 }
 
 #content-wrap table {
@@ -98,12 +83,33 @@
 #content-wrap th, td {
   min-width: 50px;
   text-align: center;
-  color: #7A200D;
 }
 
-#content-wrap td input {
+.creep-stat-val {
   font-weight: normal;
-  text-align: center;
-  width: 100%;
+}
+
+#abilities-and-actions {
+  color: #000;
+}
+
+#abilities-and-actions h4 {
+  margin: 0;
+  display: inline;
+  font-weight: bold;
+  font-style: italic;
+}
+
+#abilities-and-actions h3 {
+  border-bottom: 1px solid #7A200D;
   color: #7A200D;
+  font-size: 21px;
+  font-variant: small-caps;
+  font-weight: normal;
+  letter-spacing: 1px;
+  margin: 0;
+  margin-bottom: 0.3em;
+
+  break-inside: avoid-column;
+  break-after: avoid-column;
 }
