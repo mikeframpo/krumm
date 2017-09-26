@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 
 import { Creep } from './creep';
 import { getStatModLookup, skillNames } from "./stats";
@@ -12,16 +12,18 @@ const statNames: string[] = ['STR', 'DEX', 'CON', 'INT', 'WIS', 'CHA'];
   templateUrl: 'statblock.component.html',
   styleUrls: ['statblock.component.css']
 })
-export class Statblock implements OnInit {
+export class StatblockComponent {
+  //implements OnInit {
 
+  @Input()
   creep: Creep;
 
-  constructor(private creepService: CreepService) { }
+  // constructor(private creepService: CreepService) { }
 
-  ngOnInit(): void {
-    this.creepService.getCreep(-1)
-      .then(creep => this.creep = creep);
-  }
+  // ngOnInit(): void {
+  //   this.creepService.getCreep(-1)
+  //     .then(creep => this.creep = creep);
+  // }
 
   getStatNames(): string[] {
     return statNames;

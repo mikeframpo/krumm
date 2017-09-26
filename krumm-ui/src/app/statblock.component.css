@@ -1,4 +1,16 @@
 
+.statblock-wrapper {
+  display: inline-block;
+}
+
+.bar {
+  height: 5px;
+  background: #E69A28;
+  border: 1px solid #000;
+  position: relative;
+  z-index: 1;
+}
+
 #content-wrap {
   font-family: 'Noto Sans', 'Myriad Pro', Calibri, Helvetica, Arial,
                 sans-serif;
