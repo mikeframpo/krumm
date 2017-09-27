@@ -15,7 +15,6 @@ export const CREEP_NEWEDIT = {
   intelligence: 10,
   wisdom: 10,
   charisma: 10,
-  skills: null,
   damage_vulnerabilities: null,
   damage_resistances: null,
   damage_immunities: null,

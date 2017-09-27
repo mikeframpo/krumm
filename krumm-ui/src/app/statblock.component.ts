@@ -13,17 +13,9 @@ const statNames: string[] = ['STR', 'DEX', 'CON', 'INT', 'WIS', 'CHA'];
   styleUrls: ['statblock.component.css']
 })
 export class StatblockComponent {
-  //implements OnInit {
 
   @Input()
   creep: Creep;
-
-  // constructor(private creepService: CreepService) { }
-
-  // ngOnInit(): void {
-  //   this.creepService.getCreep(-1)
-  //     .then(creep => this.creep = creep);
-  // }
 
   getStatNames(): string[] {
     return statNames;
