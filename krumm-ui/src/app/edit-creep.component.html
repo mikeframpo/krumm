@@ -13,7 +13,7 @@
   <div class="form-group row">
     <label for="size" class="form-label">Size</label>
     <input id="size" name="size" type="size" required placeholder="Size"
-          class="form-control" [(ngModel)]="creep.size">
+          class="form-control" [(ngModel)]="creep.size" [ngbTypeahead]="sizeSearch">
   </div>
 
   <button type="submit" class="btn btn-success">Save</button>
