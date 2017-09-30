@@ -1,10 +1,22 @@
 <div *ngIf="creep" class="container">
+
   <div class="form-group row">
-    <label class="col-2 col-form-label">Name</label>
-    <div class="col-10">
-      <input class="form-control" type="text" [(ngModel)]="creep.name">
-    </div>
+    <label for="name" class="form-label">Name</label>
+    <input id="name" name="name" type="text" required placeholder="Creature name"
+          class="form-control" [(ngModel)]="creep.name" #nameElem #name="ngModel"
+          (focus)="nameFocused=true" (blur)="nameFocused=false">
+    <p [hidden]="!nameFocused || name.valid" class="alert alert-danger">
+      Name is required
+    </p>
   </div>
-  <button (click)="onClick()">Click</button>
+
+  <div class="form-group row">
+    <label for="size" class="form-label">Size</label>
+    <input id="size" name="size" type="size" required placeholder="Size"
+          class="form-control" [(ngModel)]="creep.size">
+  </div>
+
+  <button type="submit" class="btn btn-success">Save</button>
+
 </div>
 <stat-block [creep]="creep"></stat-block>

@@ -1,8 +1,8 @@
 
 export const CREEP_NEWEDIT = {
-  name: "New Creature",
-  size: "Medium",
-  type: "Type",
+  name: null,
+  size: null,
+  type: null,
   subtype: null,
   alignment: null,
   armor_class: 10,

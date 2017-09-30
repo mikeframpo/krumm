@@ -15,7 +15,6 @@ export class Creep {
   intelligence: number;
   wisdom: number;
   charisma: number;
-  stealth: number;
   damage_vulnerabilities: string;
   damage_resistances: string;
   damage_immunities: string;

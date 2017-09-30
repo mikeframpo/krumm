@@ -5,7 +5,8 @@ import { CREEP_NEWEDIT } from "./creep-newedit";
 
 @Component({
   selector: 'edit-creep',
-  templateUrl: 'edit-creep.component.html'
+  templateUrl: 'edit-creep.component.html',
+  styleUrls: ['edit-creep.component.css']
 })
 export class EditCreepComponent implements OnInit {
 
