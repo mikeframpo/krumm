@@ -4,6 +4,7 @@ import { CREEP_NEWEDIT } from "./creep-newedit";
 
 import { Observable } from "rxjs/Observable";
 import 'rxjs/add/operator/map';
+import { NgForm } from "@angular/forms";
 
 const SIZES = ['Small', 'Medium', 'Large', 'Gargantuan'];
 
@@ -21,6 +22,10 @@ export class EditCreepComponent implements OnInit {
     // contains an ID for an existing creep, in which case
     // load it from the DB.
     this.creep = Object.assign({}, CREEP_NEWEDIT);
+  }
+
+  onSubmit(form: NgForm) : void {
+    console.log(form.value);
   }
 
   sizeSearch = (text$: Observable<string>) =>

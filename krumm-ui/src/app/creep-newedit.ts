@@ -1,10 +1,10 @@
 
 export const CREEP_NEWEDIT = {
-  name: null,
-  size: null,
-  type: null,
-  subtype: null,
-  alignment: null,
+  name: "Creature",
+  size: "Medium",
+  type: "Humanoid",
+  subtype: "",
+  alignment: "Neutral",
   armor_class: 10,
   hit_points: 1,
   hit_dice: null,

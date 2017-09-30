@@ -1,22 +1,45 @@
 <div *ngIf="creep" class="container">
 
-  <div class="form-group row">
-    <label for="name" class="form-label">Name</label>
-    <input id="name" name="name" type="text" required placeholder="Creature name"
-          class="form-control" [(ngModel)]="creep.name" #nameElem #name="ngModel"
-          (focus)="nameFocused=true" (blur)="nameFocused=false">
-    <p [hidden]="!nameFocused || name.valid" class="alert alert-danger">
-      Name is required
-    </p>
-  </div>
+  <form #editForm="ngForm" (ngSubmit)="onSubmit(editForm)">
 
-  <div class="form-group row">
-    <label for="size" class="form-label">Size</label>
-    <input id="size" name="size" type="size" required placeholder="Size"
-          class="form-control" [(ngModel)]="creep.size" [ngbTypeahead]="sizeSearch">
-  </div>
+    <div class="form-group row">
+      <label for="name" class="form-label col-4">Name</label>
+      <input id="name" name="name" type="text" required placeholder="Creature name"
+            class="form-control col-8" [(ngModel)]="creep.name" #nameElem #name="ngModel"
+            (focus)="nameFocused=true" (blur)="nameFocused=false">
+      <p [hidden]="!nameFocused || name.valid" class="alert alert-danger">
+        Name is required
+      </p>
+    </div>
 
-  <button type="submit" class="btn btn-success">Save</button>
+    <div class="form-group row">
+      <label for="size" class="form-label col-4">Size</label>
+      <input id="size" name="size" type="text" required placeholder="Size"
+            class="form-control col-8" [(ngModel)]="creep.size" [ngbTypeahead]="sizeSearch">
+    </div>
+
+    <div class="form-group row">
+      <label for="type" class="form-label col-4">Type</label>
+      <input id="type" name="type" type="text" required placeholder="Type"
+            class="form-control col-8" [(ngModel)]="creep.type">
+    </div>
+
+    <div class="form-group row">
+      <label for="subtype" class="form-label col-4">Subtype</label>
+      <input id="subtype" name="subtype" type="text" placeholder="Subtype"
+            class="form-control col-8" [(ngModel)]="creep.subtype">
+    </div>
+
+    <div class="form-group row">
+      <label for="alignment" class="form-label col-4">Alignment</label>
+      <input id="alignment" name="alignment" type="text" required placeholder="Alignment"
+            class="form-control col-8" [(ngModel)]="creep.alignment">
+    </div>
+
+    <button type="submit" class="btn btn-success"
+            [disabled]="!editForm.form.valid">Save Creature</button>
+
+  </form>
 
 </div>
 <stat-block [creep]="creep"></stat-block>

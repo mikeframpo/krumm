@@ -3,9 +3,7 @@
   <div *ngIf="creep" id="content-wrap">
     <p class="creep-name">{{creep.name}}</p>
     <p class="creep-type">
-      {{creep.size}} {{creep.type}}
-      <span *ngIf="creep.subtype">({{creep.subtype}})</span>
-      , {{creep.alignment}}
+      {{creep.size}} {{creep.type}}<span *ngIf="creep.subtype"> ({{creep.subtype}})</span>, {{creep.alignment}}
     </p>
     <svg class="creep-divider" height="5" width="400">
         <polyline points="0,0 400,2.5 0,5"/>
