@@ -1,49 +1,89 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 
+from django.db.models import (Model, CharField, ForeignKey, IntegerField,
+                                ManyToManyField, BooleanField, CASCADE)
+
 CHARFIELD_DEFAULT = 100
+ACTION_DESC_MAX = 1500
 
-class Size(models.Model):
-    size=models.CharField(max_length=CHARFIELD_DEFAULT)
+class Size(Model):
+    size=CharField(max_length=CHARFIELD_DEFAULT)
 
-class Type(models.Model):
-    type=models.CharField(max_length=CHARFIELD_DEFAULT)
+class Type(Model):
+    type=CharField(max_length=CHARFIELD_DEFAULT)
 
-class Subtype(models.Model):
-    subtype=models.CharField(max_length=CHARFIELD_DEFAULT)
+class Subtype(Model):
+    subtype=CharField(max_length=CHARFIELD_DEFAULT)
 
-class Alignment(models.Model):
-    alignment=models.CharField(max_length=CHARFIELD_DEFAULT)
+class Alignment(Model):
+    alignment=CharField(max_length=CHARFIELD_DEFAULT)
 
-class Skill(models.Model):
-    skill=models.CharField(max_length=CHARFIELD_DEFAULT)
+class Skill(Model):
+    skill=CharField(max_length=CHARFIELD_DEFAULT)
 
-class CreepSkill(models.Model):
-    skill=models.ForeignKey(Skill, on_delete=models.CASCADE)
-    modifier=models.IntegerField()
+class CreepSkill(Model):
+    skill=ForeignKey(Skill, on_delete=CASCADE)
+    modifier=IntegerField()
 
-class Creep(models.Model):
-    name=models.CharField(max_length=CHARFIELD_DEFAULT)
-    woc=models.BooleanField()
+class Ability(Model):
+    ability=CharField(max_length=CHARFIELD_DEFAULT)
 
-    size=models.ForeignKey(Size, on_delete=models.CASCADE)
-    type=models.ForeignKey(Type, on_delete=models.CASCADE)
-    subtype=models.ForeignKey(Subtype, on_delete=models.CASCADE, null=True)
-    alignment=models.ForeignKey(Alignment, on_delete=models.CASCADE)
+class SavingThrow(Model):
+    ability=ForeignKey(Ability, on_delete=CASCADE)
+    modifier=IntegerField()
 
-    armor_class = models.IntegerField()
-    hit_points = models.IntegerField()
-    hitdice_num = models.IntegerField()
-    hitdice_type = models.CharField(max_length=4) #d100 is the max
-    speed = models.CharField(max_length=CHARFIELD_DEFAULT)
+class Damage(Model):
+    damage=CharField(max_length=CHARFIELD_DEFAULT)
 
-    strength = models.IntegerField()
-    dexterity = models.IntegerField()
-    constitution = models.IntegerField()
-    intelligence = models.IntegerField()
-    wisdom = models.IntegerField()
-    charisma = models.IntegerField()
+class Condition(Model):
+    condition=CharField(max_length=CHARFIELD_DEFAULT)
 
-    senses = models.CharField(max_length=CHARFIELD_DEFAULT)
-    skills = models.ManyToManyField(CreepSkill)
+class Language(Model):
+    language=CharField(max_length=CHARFIELD_DEFAULT)
+
+class Action(Model):
+    name=CharField(max_length=CHARFIELD_DEFAULT)
+    desc=CharField(max_length=ACTION_DESC_MAX)
+    attack_bonus=IntegerField(null=True)
+    damage_dice=CharField(max_length=CHARFIELD_DEFAULT, null=True)
+    damage_bonus=IntegerField(null=True)
+
+class Creep(Model):
+    name=CharField(max_length=CHARFIELD_DEFAULT)
+    woc=BooleanField()
+
+    size=ForeignKey(Size, on_delete=CASCADE)
+    type=ForeignKey(Type, on_delete=CASCADE)
+    subtype=ForeignKey(Subtype, on_delete=CASCADE, null=True)
+    alignment=ForeignKey(Alignment, on_delete=CASCADE)
+
+    armor_class = IntegerField()
+    hit_points = IntegerField()
+    hitdice_num = IntegerField()
+    hitdice_type = CharField(max_length=4) #d100 is the max
+    speed = CharField(max_length=CHARFIELD_DEFAULT)
+
+    strength = IntegerField()
+    dexterity = IntegerField()
+    constitution = IntegerField()
+    intelligence = IntegerField()
+    wisdom = IntegerField()
+    charisma = IntegerField()
+
+    senses = CharField(max_length=CHARFIELD_DEFAULT)
+    challenge_rating = CharField(max_length=CHARFIELD_DEFAULT)
+
+    skills = ManyToManyField(CreepSkill)
+    saving_throws = ManyToManyField(SavingThrow)
+    damage_vulnerabilities = ManyToManyField(Damage,
+                                        related_name='damage_vulnerabilities')
+    damage_resistances = ManyToManyField(Damage,
+                                        related_name='damage_resistances')
+    damage_immunities = ManyToManyField(Damage,
+                                        related_name='damage_immunities')
+    condition_immunities = ManyToManyField(Condition)
+    languages = ManyToManyField(Language)
+
+    actions = ManyToManyField(Action)
 

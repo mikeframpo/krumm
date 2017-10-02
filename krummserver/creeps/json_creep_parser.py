@@ -4,7 +4,10 @@ import re
 
 from django.core.exceptions import ValidationError
 from creeps.models import (Creep, Size, Type, Subtype, Alignment, Skill,
-                            CreepSkill)
+                            CreepSkill, Ability, SavingThrow, Damage, Condition,
+                            Language, Action)
+
+check_extra_fields = False
 
 def get_string(creep_data, name, required=True):
     val = creep_data.pop(name)
@@ -64,8 +67,6 @@ skill_names = [
         'survival',
 ]
 
-check_extra_fields = False
-
 def get_creep_skills(creep_data):
 
     creep_skill_names = list(filter(lambda skill: skill in creep_data.keys(),
@@ -75,9 +76,47 @@ def get_creep_skills(creep_data):
     return [(name, val)
                 for name, val in zip(creep_skill_names, creep_skill_vals)]
 
+abilities = [
+        'strength',
+        'dexterity',
+        'constitution',
+        'intelligence',
+        'wisdom',
+        'charisma',
+]
+
+def create_abilities():
+
+    for ability_name in abilities:
+        ability, added = Ability.objects.get_or_create(ability=ability_name)
+        print('Added ability: ' + ability_name)
+
+def get_saving_throws(creep_data):
+
+    creep_throw_names = list(filter(
+        lambda throw: throw + '_save' in creep_data.keys(), abilities))
+    creep_throw_vals = list(map(
+        lambda throw: creep_data.pop(throw + '_save'), creep_throw_names))
+
+    return [(throw[0], throw[1]) for throw in zip(creep_throw_names, creep_throw_vals)]
+
+def get_creep_csvlist(creep_data, key):
+
+    dmg_str = creep_data.pop(key)
+    if len(dmg_str) == 0:
+        return []
+    dmg_str_list = re.split(',|;', dmg_str)
+    return list(map(lambda dmg: dmg.strip(), dmg_str_list))
+
+def get_creep_actions(creep_data):
+    if 'actions' in creep_data.keys():
+        return creep_data.pop('actions')
+    return []
+
 def parse_json_creeps(json_path):
 
     create_skills()
+    create_abilities()
 
     parsed = json.load(open(json_path))
     for creep_data in parsed:
@@ -115,11 +154,26 @@ def parse_json_creeps(json_path):
         charisma = get_int(creep_data, 'charisma')
 
         senses = get_string(creep_data, 'senses', required=False)
+        challenge = get_string(creep_data, 'challenge_rating', required=False)
+
         creep_skills = get_creep_skills(creep_data)
         creep_skills_obj = list(
                             map(lambda skill:
                                     (Skill.objects.get(skill=skill[0]), skill[1]),
                                 creep_skills))
+
+        creep_throws = get_saving_throws(creep_data)
+        creep_throws_obj = map(lambda throw:
+                                (Ability.objects.get(ability=throw[0]), throw[1]),   
+                                    creep_throws)
+        
+        creep_vuln = get_creep_csvlist(creep_data, 'damage_vulnerabilities')
+        creep_resist = get_creep_csvlist(creep_data, 'damage_resistances')
+        creep_immun = get_creep_csvlist(creep_data, 'damage_immunities')
+        condition_immun = get_creep_csvlist(creep_data, 'condition_immunities')
+        creep_langs = get_creep_csvlist(creep_data, 'languages')
+
+        creep_actions = get_creep_actions(creep_data)
 
         name = creep_data.pop('name').lower()
         print('Processing creep: ' + name)
@@ -135,7 +189,8 @@ def parse_json_creeps(json_path):
                 strength=strength, dexterity=dexterity, 
                 constitution=constitution, intelligence=intelligence,
                 wisdom=wisdom, charisma=charisma, hitdice_num=hitdice_num,
-                hitdice_type=hitdice_type, senses=senses)
+                hitdice_type=hitdice_type, senses=senses,
+                challenge_rating=challenge)
 
         creep.save()
 
@@ -144,4 +199,49 @@ def parse_json_creeps(json_path):
                             skill=creep_skill[0], modifier=creep_skill[1])
             creep.skills.add(creep_skill)
 
+        for throw in creep_throws_obj:
+            saving_throw, added = SavingThrow.objects.get_or_create(
+                            ability=throw[0], modifier=throw[1])
+            creep.saving_throws.add(saving_throw)
+
+        for vuln in creep_vuln:
+            damage, added = Damage.objects.get_or_create(damage=vuln)
+            creep.damage_vulnerabilities.add(damage)
+
+        for resist in creep_resist:
+            damage, added = Damage.objects.get_or_create(damage=resist)
+            creep.damage_resistances.add(damage)
+
+        for immun in creep_immun:
+            damage, added = Damage.objects.get_or_create(damage=immun)
+            creep.damage_immunities.add(damage)
+
+        for immun in condition_immun:
+            condition, added = Condition.objects.get_or_create(condition=immun)
+            creep.condition_immunities.add(condition)
+
+        for lang in creep_langs:
+            lang, added = Language.objects.get_or_create(language=lang)
+            creep.languages.add(lang)
+
+        def get_action(actions, key):
+            if key in actions.keys():
+                return action[key]
+            else:
+                return None
+
+        #TODO: generalise this for special abils and legendary actions
+        for action in creep_actions:
+            
+            attack_bonus = get_action(action, 'attack_bonus')
+            damage_dice = get_action(action, 'damage_dice')
+            damage_bonus = get_action(action, 'damage_bonus')
+
+            action_obj, added = Action.objects.get_or_create(
+                                        name=action['name'],
+                                        desc=action['desc'],
+                                        attack_bonus=attack_bonus,
+                                        damage_dice=damage_dice,
+                                        damage_bonus=damage_bonus)
+            creep.actions.add(action_obj)
 
