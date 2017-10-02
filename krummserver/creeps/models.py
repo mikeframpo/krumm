@@ -15,6 +15,9 @@ class Subtype(models.Model):
 class Alignment(models.Model):
     alignment=models.CharField(max_length=CHARFIELD_DEFAULT)
 
+class Skill(models.Model):
+    skill=models.CharField(max_length=CHARFIELD_DEFAULT)
+
 class Creep(models.Model):
     name=models.CharField(max_length=CHARFIELD_DEFAULT)
     woc=models.BooleanField()
@@ -26,7 +29,8 @@ class Creep(models.Model):
 
     armor_class = models.IntegerField()
     hit_points = models.IntegerField()
-    #TODO: hit dice
+    hitdice_num = models.IntegerField()
+    hitdice_type = models.CharField(max_length=4) #d100 is the max
     speed = models.CharField(max_length=CHARFIELD_DEFAULT)
 
     strength = models.IntegerField()
@@ -37,4 +41,5 @@ class Creep(models.Model):
     charisma = models.IntegerField()
 
     senses = models.CharField(max_length=CHARFIELD_DEFAULT)
+    skills = models.ManyToManyField(Skill)
 

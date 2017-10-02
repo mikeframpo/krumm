@@ -1,8 +1,9 @@
 
 import json
-from django.core.exceptions import ValidationError
+import re
 
-from creeps.models import Creep, Size, Type, Subtype, Alignment
+from django.core.exceptions import ValidationError
+from creeps.models import Creep, Size, Type, Subtype, Alignment, Skill
 
 def get_string(creep_data, name, required=True):
     val = creep_data[name]
@@ -24,7 +25,51 @@ def get_int(creep_data, name, required=True):
             return None
     return int(val)
 
+def get_hitdice(creep_data, required=True):
+    val = creep_data['hit_dice']
+    if val is None:
+        if required:
+            raise ValidationError(
+                    'Required field %s not present' % 'hit_dice')
+        else:
+            return None
+    match = re.match(
+        r'(?P<num>[0-9]+)d(?P<type>[0-9]+)', val)
+    return match['num'], match['type']
+
+def create_skills():
+
+    for skill_name in skill_names:
+        skill, added = Skill.objects.get_or_create(skill=skill_name)
+        print('added skill: ' + skill.skill)
+
+skill_names = [
+        'acrobatics',
+        'animal handling',
+        'arcana',
+        'athletics',
+        'deception',
+        'history',
+        'insight',
+        'intimidation',
+        'medicine',
+        'nature',
+        'perception',
+        'performance',
+        'persuasion',
+        'religion',
+        'sleight of hand',
+        'stealth',
+        'survival',
+]
+
+def get_creep_skills(creep_data):
+
+    return filter(lambda skill: skill in creep_data.keys(), skill_names)
+
 def parse_json_creeps(json_path):
+
+    create_skills()
 
     parsed = json.load(open(json_path))
     for creep_data in parsed:
@@ -52,6 +97,7 @@ def parse_json_creeps(json_path):
         armor_class = get_int(creep_data, 'armor_class')
         hit_points = get_int(creep_data, 'hit_points')
         speed = get_string(creep_data, 'speed')
+        hitdice_num, hitdice_type = get_hitdice(creep_data)
 
         strength = get_int(creep_data, 'strength')
         dexterity = get_int(creep_data, 'dexterity')
@@ -59,6 +105,11 @@ def parse_json_creeps(json_path):
         intelligence = get_int(creep_data, 'intelligence')
         wisdom = get_int(creep_data, 'wisdom')
         charisma = get_int(creep_data, 'charisma')
+
+        senses = get_string(creep_data, 'senses', required=False)
+        skill_names = list(get_creep_skills(creep_data))
+        skills = list(map(lambda skill: Skill.objects.get(skill=skill),
+                        skill_names))
 
         name = creep_data['name'].lower()
         print('Processing creep: ' + name)
@@ -68,7 +119,12 @@ def parse_json_creeps(json_path):
                 armor_class=armor_class, hit_points=hit_points, speed=speed,
                 strength=strength, dexterity=dexterity, 
                 constitution=constitution, intelligence=intelligence,
-                wisdom=wisdom, charisma=charisma)
+                wisdom=wisdom, charisma=charisma, hitdice_num=hitdice_num,
+                hitdice_type=hitdice_type, senses=senses)
 
         creep.save()
+
+        for skill in skills:
+            creep.skills.add(skill)
+
 
