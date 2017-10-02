@@ -18,6 +18,10 @@ class Alignment(models.Model):
 class Skill(models.Model):
     skill=models.CharField(max_length=CHARFIELD_DEFAULT)
 
+class CreepSkill(models.Model):
+    skill=models.ForeignKey(Skill, on_delete=models.CASCADE)
+    modifier=models.IntegerField()
+
 class Creep(models.Model):
     name=models.CharField(max_length=CHARFIELD_DEFAULT)
     woc=models.BooleanField()
@@ -41,5 +45,5 @@ class Creep(models.Model):
     charisma = models.IntegerField()
 
     senses = models.CharField(max_length=CHARFIELD_DEFAULT)
-    skills = models.ManyToManyField(Skill)
+    skills = models.ManyToManyField(CreepSkill)
 

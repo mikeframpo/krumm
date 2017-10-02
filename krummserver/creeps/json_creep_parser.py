@@ -3,10 +3,11 @@ import json
 import re
 
 from django.core.exceptions import ValidationError
-from creeps.models import Creep, Size, Type, Subtype, Alignment, Skill
+from creeps.models import (Creep, Size, Type, Subtype, Alignment, Skill,
+                            CreepSkill)
 
 def get_string(creep_data, name, required=True):
-    val = creep_data[name]
+    val = creep_data.pop(name)
     if val is None or len(val) == 0:
         if required:
             raise ValidationError(
@@ -16,7 +17,7 @@ def get_string(creep_data, name, required=True):
     return val
 
 def get_int(creep_data, name, required=True):
-    val = creep_data[name]
+    val = creep_data.pop(name)
     if val is None:
         if required:
             raise ValidationError(
@@ -26,7 +27,7 @@ def get_int(creep_data, name, required=True):
     return int(val)
 
 def get_hitdice(creep_data, required=True):
-    val = creep_data['hit_dice']
+    val = creep_data.pop('hit_dice')
     if val is None:
         if required:
             raise ValidationError(
@@ -63,9 +64,16 @@ skill_names = [
         'survival',
 ]
 
+check_extra_fields = False
+
 def get_creep_skills(creep_data):
 
-    return filter(lambda skill: skill in creep_data.keys(), skill_names)
+    creep_skill_names = list(filter(lambda skill: skill in creep_data.keys(),
+                            skill_names))
+    creep_skill_vals = [creep_data.pop(skill) for skill in creep_skill_names]
+
+    return [(name, val)
+                for name, val in zip(creep_skill_names, creep_skill_vals)]
 
 def parse_json_creeps(json_path):
 
@@ -107,12 +115,19 @@ def parse_json_creeps(json_path):
         charisma = get_int(creep_data, 'charisma')
 
         senses = get_string(creep_data, 'senses', required=False)
-        skill_names = list(get_creep_skills(creep_data))
-        skills = list(map(lambda skill: Skill.objects.get(skill=skill),
-                        skill_names))
+        creep_skills = get_creep_skills(creep_data)
+        creep_skills_obj = list(
+                            map(lambda skill:
+                                    (Skill.objects.get(skill=skill[0]), skill[1]),
+                                creep_skills))
 
-        name = creep_data['name'].lower()
+        name = creep_data.pop('name').lower()
         print('Processing creep: ' + name)
+
+        if check_extra_fields:
+            if len(creep_data) > 0:
+                raise Exception('fields remaining on creep %s \n %s' %
+                                (name, creep_data.keys()))
 
         creep, created = Creep.objects.get_or_create(name=name, woc=True,
                 size=size, type=type, subtype=subtype, alignment=alignment,
@@ -124,7 +139,9 @@ def parse_json_creeps(json_path):
 
         creep.save()
 
-        for skill in skills:
-            creep.skills.add(skill)
+        for creep_skill in creep_skills_obj:
+            creep_skill, added = CreepSkill.objects.get_or_create(
+                            skill=creep_skill[0], modifier=creep_skill[1])
+            creep.skills.add(creep_skill)
 
 
