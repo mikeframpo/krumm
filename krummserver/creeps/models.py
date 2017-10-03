@@ -5,7 +5,7 @@ from django.db.models import (Model, CharField, ForeignKey, IntegerField,
                                 ManyToManyField, BooleanField, CASCADE)
 
 CHARFIELD_DEFAULT = 100
-ACTION_DESC_MAX = 1500
+ACTION_DESC_MAX = 2000
 
 class Size(Model):
     size=CharField(max_length=CHARFIELD_DEFAULT)
@@ -85,5 +85,8 @@ class Creep(Model):
     condition_immunities = ManyToManyField(Condition)
     languages = ManyToManyField(Language)
 
-    actions = ManyToManyField(Action)
+    actions = ManyToManyField(Action, related_name='actions')
+    special_abilities = ManyToManyField(Action, related_name='special_abilities')
+    legendary_actions = ManyToManyField(Action, related_name='legendary_actions')
+    reactions = ManyToManyField(Action, related_name='reactions')
 

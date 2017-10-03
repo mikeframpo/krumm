@@ -7,8 +7,6 @@ from creeps.models import (Creep, Size, Type, Subtype, Alignment, Skill,
                             CreepSkill, Ability, SavingThrow, Damage, Condition,
                             Language, Action)
 
-check_extra_fields = False
-
 def get_string(creep_data, name, required=True):
     val = creep_data.pop(name)
     if val is None or len(val) == 0:
@@ -56,6 +54,7 @@ skill_names = [
         'history',
         'insight',
         'intimidation',
+        'investigation',
         'medicine',
         'nature',
         'perception',
@@ -108,12 +107,38 @@ def get_creep_csvlist(creep_data, key):
     dmg_str_list = re.split(',|;', dmg_str)
     return list(map(lambda dmg: dmg.strip(), dmg_str_list))
 
-def get_creep_actions(creep_data):
-    if 'actions' in creep_data.keys():
-        return creep_data.pop('actions')
+def get_creep_dictfield(creep_data, key):
+
+    if key in creep_data.keys():
+        return creep_data.pop(key)
     return []
 
-def parse_json_creeps(json_path):
+def create_actions(actions):
+
+    def get_action_field(action, key):
+        if key in action.keys():
+            return action[key]
+        else:
+            return None
+
+    action_objs = []
+    for action in actions:
+        
+        attack_bonus = get_action_field(action, 'attack_bonus')
+        damage_dice = get_action_field(action, 'damage_dice')
+        damage_bonus = get_action_field(action, 'damage_bonus')
+
+        action_obj, added = Action.objects.get_or_create(
+                                    name=action['name'],
+                                    desc=action['desc'],
+                                    attack_bonus=attack_bonus,
+                                    damage_dice=damage_dice,
+                                    damage_bonus=damage_bonus)
+        action_objs.append(action_obj)
+
+    return action_objs
+
+def parse_json_creeps(json_path, check_extra_fields=False):
 
     create_skills()
     create_abilities()
@@ -173,7 +198,10 @@ def parse_json_creeps(json_path):
         condition_immun = get_creep_csvlist(creep_data, 'condition_immunities')
         creep_langs = get_creep_csvlist(creep_data, 'languages')
 
-        creep_actions = get_creep_actions(creep_data)
+        creep_actions = get_creep_dictfield(creep_data, 'actions')
+        creep_special_abilities = get_creep_dictfield(creep_data, 'special_abilities')
+        creep_legendary_actions = get_creep_dictfield(creep_data, 'legendary_actions')
+        creep_reactions = get_creep_dictfield(creep_data, 'reactions')
 
         name = creep_data.pop('name').lower()
         print('Processing creep: ' + name)
@@ -224,24 +252,18 @@ def parse_json_creeps(json_path):
             lang, added = Language.objects.get_or_create(language=lang)
             creep.languages.add(lang)
 
-        def get_action(actions, key):
-            if key in actions.keys():
-                return action[key]
-            else:
-                return None
+        actions = create_actions(creep_actions)
+        for action in actions:
+            creep.actions.add(action)
 
-        #TODO: generalise this for special abils and legendary actions
-        for action in creep_actions:
-            
-            attack_bonus = get_action(action, 'attack_bonus')
-            damage_dice = get_action(action, 'damage_dice')
-            damage_bonus = get_action(action, 'damage_bonus')
+        special_abilities = create_actions(creep_special_abilities)
+        for action in actions:
+            creep.special_abilities.add(action)
 
-            action_obj, added = Action.objects.get_or_create(
-                                        name=action['name'],
-                                        desc=action['desc'],
-                                        attack_bonus=attack_bonus,
-                                        damage_dice=damage_dice,
-                                        damage_bonus=damage_bonus)
-            creep.actions.add(action_obj)
+        legendary_actions = create_actions(creep_legendary_actions)
+        for action in actions:
+            creep.legendary_actions.add(action)
 
+        reactions = create_actions(creep_reactions)
+        for action in actions:
+            creep.reactions.add(action)
