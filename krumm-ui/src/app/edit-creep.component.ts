@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { Creep } from "./creep";
 import { CREEP_NEWEDIT } from "./creep-newedit";
 
@@ -15,13 +15,15 @@ const SIZES = ['Small', 'Medium', 'Large', 'Gargantuan'];
 })
 export class EditCreepComponent implements OnInit {
 
+  @Input()
   private creep: Creep;
 
   ngOnInit(): void {
     // TODO: in the future this will check whether the route
     // contains an ID for an existing creep, in which case
     // load it from the DB.
-    this.creep = Object.assign({}, CREEP_NEWEDIT);
+
+    //this.creep = Object.assign({}, CREEP_NEWEDIT);
   }
 
   onSubmit(form: NgForm) : void {

@@ -1,5 +1,7 @@
 <div *ngIf="creep" class="container">
 
+  <div class="row">
+  <div class="col-6">
   <form #editForm="ngForm" (ngSubmit)="onSubmit(editForm)">
 
     <div class="form-group row">
@@ -40,6 +42,10 @@
             [disabled]="!editForm.form.valid">Save Creature</button>
 
   </form>
+  </div>
+  <div class="col-6">
+    <stat-block [creep]="creep"></stat-block>
+  </div>
+  </div>
 
 </div>
-<stat-block [creep]="creep"></stat-block>
