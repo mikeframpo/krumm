@@ -59,20 +59,46 @@
     <svg class="creep-divider" height="5" width="400">
         <polyline points="0,0 400,2.5 0,5"/>
     </svg>
+
     <div id="abilities-and-actions">
+
       <div>
         <div *ngFor="let ability of creep.special_abilities">
           <h4>{{ability.name}}</h4>
           {{ability.desc}}
         </div>
       </div>
-      <h3>Actions</h3>
-      <div>
-        <div *ngFor="let action of creep.actions">
-          <h4>{{action.name}}</h4>
-          {{action.desc}}
+
+      <div *ngIf="creep.actions.length > 0">
+        <h3>Actions</h3>
+        <div>
+          <div *ngFor="let action of creep.actions">
+            <h4>{{action.name}}</h4>
+            {{action.desc}}
+          </div>
         </div>
       </div>
+
+      <div *ngIf="creep.reactions.length > 0">
+        <h3>Reactions</h3>
+        <div>
+          <div *ngFor="let action of creep.reactions">
+            <h4>{{action.name}}</h4>
+            {{action.desc}}
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="creep.legendary_actions.length > 0">
+        <h3>Legendary Actions</h3>
+        <div>
+          <div *ngFor="let action of creep.legendary_actions">
+            <h4>{{action.name}}</h4>
+            {{action.desc}}
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
   <div class="bar"></div>

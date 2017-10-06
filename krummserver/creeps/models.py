@@ -85,8 +85,8 @@ class Creep(Model):
     condition_immunities = ManyToManyField(Condition)
     languages = ManyToManyField(Language)
 
-    actions = ManyToManyField(Action, related_name='actions')
     special_abilities = ManyToManyField(Action, related_name='special_abilities')
+    actions = ManyToManyField(Action, related_name='actions')
     legendary_actions = ManyToManyField(Action, related_name='legendary_actions')
     reactions = ManyToManyField(Action, related_name='reactions')
 

@@ -252,18 +252,18 @@ def parse_json_creeps(json_path, check_extra_fields=False):
             lang, added = Language.objects.get_or_create(language=lang)
             creep.languages.add(lang)
 
+        special_abilities = create_actions(creep_special_abilities)
+        for action in special_abilities:
+            creep.special_abilities.add(action)
+
         actions = create_actions(creep_actions)
         for action in actions:
             creep.actions.add(action)
 
-        special_abilities = create_actions(creep_special_abilities)
-        for action in actions:
-            creep.special_abilities.add(action)
+        reactions = create_actions(creep_reactions)
+        for action in reactions:
+            creep.reactions.add(action)
 
         legendary_actions = create_actions(creep_legendary_actions)
-        for action in actions:
+        for action in legendary_actions:
             creep.legendary_actions.add(action)
-
-        reactions = create_actions(creep_reactions)
-        for action in actions:
-            creep.reactions.add(action)
