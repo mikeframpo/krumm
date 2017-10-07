@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from "@angular/core";
 
 import { Creep } from './creep';
-import { getStatModLookup, skillNames } from "./stats";
+import { getStatModLookup, skillNames, abilities } from "./stats";
 import { CreepService } from "./creep.service";
 
 const noEditStyle: string = "creep-field-noedit";
@@ -34,12 +34,20 @@ export class StatblockComponent {
       item => item.toString() + '(' + getStatModLookup(item) + ')');
   }
 
-  // cache the value
-  skills: string[] = null;
-
   private toTitleCase(str: string): string {
     return str[0].toUpperCase() + str.slice(1);
   }
+
+  private toSignedNum(val: number): string {
+    if (val < 0) {
+      return val.toString();
+    } else {
+      return '+' + val.toString();
+    }
+  }
+
+  // cache the value
+  skills: string[] = null;
 
   getSkills(): string[] {
     if (!this.skills) {
@@ -48,12 +56,31 @@ export class StatblockComponent {
         if (this.creep[skillName]) {
           skills.push({
             name: this.toTitleCase(skillName),
-            val: '+' + String(this.creep[skillName])
+            val: this.toSignedNum(this.creep[skillName])
           });
         }
       }
       this.skills = skills;
     }
     return this.skills;
+  }
+
+  saves: string[] = null;
+
+  getSaves(): string[] {
+    if (!this.saves) {
+      let saves = [];
+      for (let ability of abilities) {
+        let throwKey = ability + '_save';
+        if (this.creep[throwKey]) {
+          saves.push({
+            name: this.toTitleCase(ability.slice(0, 3)),
+            val: this.toSignedNum(this.creep[throwKey])
+          })
+        }
+      }
+      this.saves = saves;
+    }
+    return this.saves;
   }
 }

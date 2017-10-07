@@ -56,3 +56,12 @@ export const skillNames: string[] = [
   'stealth',
   'survival'
 ]
+
+export const abilities: string[] = [
+  'strength',
+  'dexterity',
+  'constitution',
+  'intelligence',
+  'wisdom',
+  'charisma',
+]

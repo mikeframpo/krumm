@@ -125,3 +125,8 @@
   break-inside: avoid-column;
   break-after: avoid-column;
 }
+
+.action-block {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

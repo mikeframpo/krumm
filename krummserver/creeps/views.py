@@ -61,7 +61,7 @@ def get_creep_json(creep, fields):
     if has_field('hit_points'):
         creep_obj['hit_points'] = creep.hit_points
     if has_field('hitdice'):
-        creep_obj['hitdice'] \
+        creep_obj['hit_dice'] \
             = str(creep.hitdice_num) + 'd' + str(creep.hitdice_type)
     if has_field('speed'):
         creep_obj['speed'] = creep.speed
