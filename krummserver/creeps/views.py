@@ -32,16 +32,20 @@ def load_actions(creep, field, creep_obj):
 
     creep_obj[field] = actions
 
-def get_creep_json(creep, fields):
+def load_creep_fields(creep, fields):
     
     def has_field(field):
-        if fields == 'all':
+        if fields == 'none':
+            return False
+        elif fields == 'all':
             return True
         else:
             return field in fields
 
     creep_obj = { }
 
+    if has_field('id'):
+        creep_obj['id'] = creep.id
     if has_field('name'):
         creep_obj['name'] = string.capwords(creep.name)
     if has_field('size'):
@@ -126,7 +130,7 @@ def get_creep_json(creep, fields):
     if has_field('reactions'):
         load_actions(creep, 'reactions', creep_obj)
 
-    return json.dumps(creep_obj)
+    return creep_obj
 
 def creep_by_id(request, creep_id):
     
@@ -136,7 +140,23 @@ def creep_by_id(request, creep_id):
     if 'fields' in request.GET.keys():
         fields = request.GET['fields'].split(',')
 
-    creep_json = get_creep_json(creep, fields)
+    creep_obj = load_creep_fields(creep, fields)
+    creep_json = json.dumps(creep_obj)
 
     return HttpResponse(creep_json)
+
+def query_creeps(request):
+
+    creeps = Creep.objects.order_by('name')
+
+    fields = 'none'
+    if 'fields' in request.GET.keys():
+        fields = request.GET['fields'].split(',')
+
+    creep_objs = []
+    for creep in creeps:
+        creep_objs.append(load_creep_fields(creep, fields))
+
+    creeps_json = json.dumps(creep_objs)
+    return HttpResponse(creeps_json)
 

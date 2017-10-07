@@ -11,13 +11,15 @@ import { StatblockComponent } from './statblock.component';
 import { CreepService } from './creep.service';
 import { EditCreepComponent } from './edit-creep.component';
 import { CreepDisplayComponent } from './creep-display.component';
+import { CreepListComponent } from './creep-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     StatblockComponent,
     EditCreepComponent,
-    CreepDisplayComponent
+    CreepDisplayComponent,
+    CreepListComponent
   ],
   imports: [
     AppRoutingModule,
