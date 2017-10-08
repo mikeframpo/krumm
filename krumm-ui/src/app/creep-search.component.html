@@ -1,0 +1,14 @@
+
+<div class="input-group">
+  <input class="form-control" type="text" placeholder="Name..."
+        [(ngModel)]="searchParams.name" (keyup.enter)="searchCreeps()">
+  <span class="input-group-btn">
+    <button class="btn" (click)="searchCreeps()">Search</button>
+  </span>
+</div>
+
+<div *ngIf="creeps">
+  <div *ngFor="let creep of creeps">
+    <a routerLink="/creep/id/{{creep.id}}">{{creep.name}}</a>
+  </div>
+</div>

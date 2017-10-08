@@ -1,5 +1,8 @@
-<h1>{{title}}</h1>
-<nav>
-  <a routerLink="/creep/list" routerLinkActive="active">Creatures</a>
-</nav>
-<router-outlet></router-outlet>
+<div class="container-fluid">
+  <h1>{{title}}</h1>
+  <nav class="nav">
+    <a class="nav-link" routerLink="/creep/search"
+      routerLinkActive="active">Search creatures</a>
+  </nav>
+  <router-outlet></router-outlet>
+</div>

@@ -5,6 +5,7 @@ from .models import Creep
 
 import string
 import json
+import re
 
 def load_damage_field(creep, field, creep_obj):
 
@@ -147,11 +148,19 @@ def creep_by_id(request, creep_id):
 
 def query_creeps(request):
 
-    creeps = Creep.objects.order_by('name')
+    def get_url_field(field):
+        if field in request.GET.keys():
+            return request.GET[field]
+        return None
 
-    fields = 'none'
-    if 'fields' in request.GET.keys():
-        fields = request.GET['fields'].split(',')
+    name_field = get_url_field('name')
+    fields = get_url_field('fields')
+
+    creeps = Creep.objects.order_by('name')
+    if name_field is not None:
+        name_filters = re.split(r'\s+', name_field)
+        for name_filt in name_filters:
+            creeps = creeps.filter(name__contains=name_filt)
 
     creep_objs = []
     for creep in creeps:
