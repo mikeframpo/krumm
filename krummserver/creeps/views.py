@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.core.paginator import Paginator
 
 from .models import Creep
 
@@ -146,6 +147,8 @@ def creep_by_id(request, creep_id):
 
     return HttpResponse(creep_json)
 
+QUERY_PAGE_MAX = 20
+
 def query_creeps(request):
 
     def get_url_field(field):
@@ -155,6 +158,7 @@ def query_creeps(request):
 
     name_field = get_url_field('name')
     fields = get_url_field('fields')
+    page = get_url_field('page')
 
     creeps = Creep.objects.order_by('name')
     if name_field is not None:
@@ -162,10 +166,22 @@ def query_creeps(request):
         for name_filt in name_filters:
             creeps = creeps.filter(name__contains=name_filt)
 
+    if page is None:
+        page = 1
+
+    paginator = Paginator(creeps, QUERY_PAGE_MAX)
+    page = paginator.page(page)
+
     creep_objs = []
-    for creep in creeps:
+    for creep in page.object_list:
         creep_objs.append(load_creep_fields(creep, fields))
 
-    creeps_json = json.dumps(creep_objs)
-    return HttpResponse(creeps_json)
+    query_response = {
+        'page': page.number,
+        'num_pages': paginator.num_pages,
+        'creeps': creep_objs,
+    }
+
+    response_json = json.dumps(query_response)
+    return HttpResponse(response_json)
 

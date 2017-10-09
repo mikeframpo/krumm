@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { CreepService } from "./creep.service";
 import { Creep } from "./creep";
 import { SearchParams } from "./search-params";
+import { SearchResponse } from "./search-response";
 
 
 @Component({
@@ -9,7 +10,10 @@ import { SearchParams } from "./search-params";
 })
 export class CreepSearchComponent implements OnInit {
 
-  private creeps: Creep[];
+  private creeps: object[];
+  private pages: number[];
+  private currentPage: number;
+
   private searchParams: SearchParams;
 
   constructor(private creepService: CreepService) { }
@@ -21,8 +25,10 @@ export class CreepSearchComponent implements OnInit {
 
   searchCreeps(): void {
     this.creepService.searchCreeps(this.searchParams)
-    .then(creeps => {
-      this.creeps = creeps;
+    .then(response => {
+      this.creeps = response.creeps;
+      this.pages = Array(response.num_pages).fill(0).map((x,i) => i+1);
+      this.currentPage = response.page;
     });
   }
 }
