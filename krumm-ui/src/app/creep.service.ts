@@ -4,7 +4,6 @@ import { Creep } from "./creep";
 import { Http } from "@angular/http";
 
 import 'rxjs/add/operator/toPromise';
-import { SearchParams } from "./search-params";
 import { SearchResponse } from "./search-response";
 
 const creepUrlBase = 'http://127.0.0.1:8000';
@@ -25,11 +24,14 @@ export class CreepService {
       });
   }
 
-  searchCreeps(searchParams: SearchParams): Promise<SearchResponse> {
+  searchCreeps(searchParams): Promise<SearchResponse> {
 
     let urlParts = [creepQueryUrl];
-    if (searchParams.name) {
-      urlParts.push('&name=' + searchParams.name.toLowerCase());
+    if (searchParams.nameQuery) {
+      urlParts.push('&name=' + searchParams.nameQuery.toLowerCase());
+    }
+    if (searchParams.page) {
+      urlParts.push('&page=' + searchParams.page);
     }
     let url = urlParts.join('');
 

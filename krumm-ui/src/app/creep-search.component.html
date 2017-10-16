@@ -1,11 +1,17 @@
 
 <div class="input-group">
-  <input class="form-control" type="text" placeholder="Name..."
-        [(ngModel)]="searchParams.name" (keyup.enter)="searchCreeps()">
+  <input class="form-control" #creepName type="text" placeholder="Name..."
+        [(ngModel)]="nameQuery" (keyup.enter)="searchCreeps(creepName.value)">
   <span class="input-group-btn">
-    <button class="btn" (click)="searchCreeps()">Search</button>
+    <button class="btn" (click)="searchCreeps(creepName.value)">Search</button>
   </span>
 </div>
+<div class="input-group">
+    <label >Type</label>
+    <select>
+      <option>Dragon</option>
+    </select>
+  </div>
 
 <div *ngIf="creeps">
   <div *ngFor="let creep of creeps">
@@ -15,11 +21,12 @@
 
 <nav aria-label="Search results" *ngIf="creeps">
   <ul class="pagination">
-    <li class="page-item"><a class="page-link">Previous</a></li>
+    <!-- <li class="page-item"><a class="page-link" href="#">Previous</a></li> -->
     <li class="page-item" *ngFor="let pageNum of pages"
         [ngClass]="{'active': pageNum == currentPage}">
-      <a class="page-link">{{pageNum}}</a>
+      <a class="page-link" routerLink="./" [queryParams]="{page: pageNum}"
+          queryParamsHandling="merge">{{pageNum}}</a>
     </li>
-    <li class="page-item"><a class="page-link">Next</a></li>
+    <!-- <li class="page-item"><a class="page-link" href="#">Next</a></li> -->
   </ul>
 </nav>
