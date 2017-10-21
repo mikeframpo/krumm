@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.core.paginator import Paginator
 
-from .models import Creep
+from .models import Creep, Type
 
 import string
 import json
@@ -157,6 +157,7 @@ def query_creeps(request):
         return None
 
     name_field = get_url_field('name')
+    type_field = get_url_field('type')
     fields = get_url_field('fields')
     page = get_url_field('page')
 
@@ -165,6 +166,9 @@ def query_creeps(request):
         name_filters = re.split(r'\s+', name_field)
         for name_filt in name_filters:
             creeps = creeps.filter(name__contains=name_filt)
+
+    if type_field is not None:
+        creeps = creeps.filter(type__type__exact=type_field)
 
     if page is None:
         page = 1
@@ -184,4 +188,12 @@ def query_creeps(request):
 
     response_json = json.dumps(query_response)
     return HttpResponse(response_json)
+
+def query_meta(request, field_name):
+
+    if field_name == 'types':
+        types = [ctype.type for ctype in Type.objects.all()]
+        return HttpResponse(json.dumps(types))
+    else:
+        raise Http404('Unknown meta field name %s' % field_name)
 

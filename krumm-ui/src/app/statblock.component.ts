@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from "@angular/core";
 
 import { Creep } from './creep';
+import { Utils } from './utils';
 import { getStatModLookup, skillNames, abilities } from "./stats";
 import { CreepService } from "./creep.service";
 
@@ -34,10 +35,6 @@ export class StatblockComponent {
       item => item.toString() + '(' + getStatModLookup(item) + ')');
   }
 
-  private toTitleCase(str: string): string {
-    return str[0].toUpperCase() + str.slice(1);
-  }
-
   private toSignedNum(val: number): string {
     if (val < 0) {
       return val.toString();
@@ -55,7 +52,7 @@ export class StatblockComponent {
       for (let skillName of skillNames) {
         if (this.creep[skillName]) {
           skills.push({
-            name: this.toTitleCase(skillName),
+            name: Utils.toTitleCase(skillName),
             val: this.toSignedNum(this.creep[skillName])
           });
         }
@@ -74,7 +71,7 @@ export class StatblockComponent {
         let throwKey = ability + '_save';
         if (this.creep[throwKey]) {
           saves.push({
-            name: this.toTitleCase(ability.slice(0, 3)),
+            name: Utils.toTitleCase(ability.slice(0, 3)),
             val: this.toSignedNum(this.creep[throwKey])
           })
         }

@@ -1,17 +1,48 @@
 
-<div class="input-group">
-  <input class="form-control" #creepName type="text" placeholder="Name..."
-        [(ngModel)]="nameQuery" (keyup.enter)="searchCreeps(creepName.value)">
-  <span class="input-group-btn">
-    <button class="btn" (click)="searchCreeps(creepName.value)">Search</button>
-  </span>
-</div>
-<div class="input-group">
-    <label >Type</label>
-    <select>
-      <option>Dragon</option>
-    </select>
+<div class="row">
+  
+  <div class="col-3 form-group">
+    <label class="control-label" for="search-name">Creature Name</label>
+    <input class="form-control" type="text" placeholder="Name..." id="search-name"
+          #creepName [(ngModel)]="nameQuery" (keyup.enter)="searchCreeps()">
   </div>
+
+  <div class="col-3 form-group">
+    <label for="select-type">Type</label>
+    <div>
+      <select class="form-control" id="select-type"
+            [(ngModel)]="creepType">
+
+        <option value=""></option>
+        <option *ngFor="let type of creepTypes"
+                [selected]="type == creepType">{{type}}</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="col-2 form-group">
+    <label for="cr-min">CR Min</label>
+    <div>
+      <input class="form-control" type="number" id="cr-min">
+    </div>
+  </div>
+
+  <div class="col-2 form-group">
+    <label for="cr-max">CR Max</label>
+    <div>
+      <input class="form-control" type="number" id="cr-max">
+    </div>
+  </div>
+
+  <div class="col-2 form-group">
+    <label for="btn-search"> &nbsp; </label>
+    <div>
+    <button class="btn" id="btn-search"
+            (click)="searchCreeps(creepName.value)">Search</button>
+    </div>
+  </div>
+
+</div>
 
 <div *ngIf="creeps">
   <div *ngFor="let creep of creeps">
