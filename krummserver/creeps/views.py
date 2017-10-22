@@ -121,7 +121,9 @@ def load_creep_fields(creep, fields):
         creep_obj['languages'] = languages_str
 
     if has_field('challenge_rating'):
-        creep_obj['challenge_rating'] = creep.challenge_rating
+        cr_ratio = creep.challenge_rating.as_integer_ratio()
+        creep_obj['cr_num'] = cr_ratio[0]
+        creep_obj['cr_den'] = cr_ratio[1]
 
     if has_field('special_abilities'):
         load_actions(creep, 'special_abilities', creep_obj)
@@ -158,6 +160,8 @@ def query_creeps(request):
 
     name_field = get_url_field('name')
     type_field = get_url_field('type')
+    crmin_field = get_url_field('crmin')
+    crmax_field = get_url_field('crmax')
     fields = get_url_field('fields')
     page = get_url_field('page')
 
@@ -169,6 +173,12 @@ def query_creeps(request):
 
     if type_field is not None:
         creeps = creeps.filter(type__type__exact=type_field)
+
+    if crmin_field is not None:
+        creeps = creeps.filter(challenge_rating__gte=float(crmin_field))
+
+    if crmax_field is not None:
+        creeps = creeps.filter(challenge_rating__lte=float(crmax_field))
 
     if page is None:
         page = 1

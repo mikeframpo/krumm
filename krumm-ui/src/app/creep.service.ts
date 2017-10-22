@@ -37,6 +37,12 @@ export class CreepService {
     if (searchParams.page) {
       urlParts.push('&page=' + searchParams.page);
     }
+    if (searchParams.crMin) {
+      urlParts.push('&crmin=' + searchParams.crMin);
+    }
+    if (searchParams.crMax) {
+      urlParts.push('&crmax=' + searchParams.crMax);
+    }
     let url = urlParts.join('');
 
     return this.http.get(url)

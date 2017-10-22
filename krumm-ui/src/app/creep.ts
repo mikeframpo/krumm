@@ -21,7 +21,8 @@ export class Creep {
   condition_immunities: string;
   senses: string;
   languages: string;
-  challenge_rating: string;
+  cr_num: number;
+  cr_den: number;
   special_abilities: Object[];
   actions: Object[];
 }

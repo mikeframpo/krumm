@@ -1,6 +1,7 @@
 
 import json
 import re
+from decimal import Decimal
 
 from django.core.exceptions import ValidationError
 from creeps.models import (Creep, Size, Type, Subtype, Alignment, Skill,
@@ -179,7 +180,13 @@ def parse_json_creeps(json_path, check_extra_fields=False):
         charisma = get_int(creep_data, 'charisma')
 
         senses = get_string(creep_data, 'senses', required=False)
+
         challenge = get_string(creep_data, 'challenge_rating', required=False)
+        cr_parts = re.match(r'(\d+)/?(\d+)?', challenge)
+        if cr_parts[2] is not None:
+            cr_dec = Decimal(cr_parts[1]) / Decimal(cr_parts[2])
+        else:
+            cr_dec = Decimal(cr_parts[1])
 
         creep_skills = get_creep_skills(creep_data)
         creep_skills_obj = list(
@@ -218,7 +225,7 @@ def parse_json_creeps(json_path, check_extra_fields=False):
                 constitution=constitution, intelligence=intelligence,
                 wisdom=wisdom, charisma=charisma, hitdice_num=hitdice_num,
                 hitdice_type=hitdice_type, senses=senses,
-                challenge_rating=challenge)
+                challenge_rating=cr_dec)
 
         creep.save()
 

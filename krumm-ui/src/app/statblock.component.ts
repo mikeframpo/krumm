@@ -80,4 +80,12 @@ export class StatblockComponent {
     }
     return this.saves;
   }
+
+  getChallengeRating(): string {
+    let cr = this.creep.cr_num.toString();
+    if (this.creep.cr_den > 1) {
+      cr += '/' + this.creep.cr_den.toString();
+    }
+    return cr;
+  }
 }

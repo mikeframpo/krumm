@@ -19,6 +19,8 @@ export class CreepSearchComponent {
   private nameQuery: string;
   private currentPage: string;
   private creepType: string;
+  private crMin: string;
+  private crMax: string;
 
   constructor(private creepService: CreepService,
               private route: ActivatedRoute,
@@ -30,6 +32,8 @@ export class CreepSearchComponent {
       this.nameQuery = queryParamMap.get('name');
       this.currentPage = queryParamMap.get('page') || "1";
       this.creepType = queryParamMap.get('type');
+      this.crMin = queryParamMap.get('crmin');
+      this.crMax = queryParamMap.get('crmax');
 
       this.queryCreeps();
       this.getCreepTypes();
@@ -43,6 +47,8 @@ export class CreepSearchComponent {
                           queryParams: { 
                             name: this.nameQuery || null,
                             type: this.creepType || null,
+                            crmin: this.crMin || null,
+                            crmax: this.crMax || null,
                            },
                           queryParamsHandling: ''
                         });
@@ -53,7 +59,9 @@ export class CreepSearchComponent {
     let searchParams = {
       nameQuery: this.nameQuery,
       page: this.currentPage,
-      type: this.creepType
+      type: this.creepType,
+      crMin: this.crMin,
+      crMax: this.crMax,
     }
 
     this.creepService.searchCreeps(searchParams)

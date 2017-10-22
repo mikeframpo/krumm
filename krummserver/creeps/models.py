@@ -2,7 +2,8 @@ from django.db import models
 from django.core.exceptions import ValidationError
 
 from django.db.models import (Model, CharField, ForeignKey, IntegerField,
-                                ManyToManyField, BooleanField, CASCADE)
+                                ManyToManyField, BooleanField, DecimalField,
+                                CASCADE)
 
 CHARFIELD_DEFAULT = 100
 ACTION_DESC_MAX = 2000
@@ -72,7 +73,7 @@ class Creep(Model):
     charisma = IntegerField()
 
     senses = CharField(max_length=CHARFIELD_DEFAULT)
-    challenge_rating = CharField(max_length=CHARFIELD_DEFAULT)
+    challenge_rating = DecimalField(max_digits=5, decimal_places=3)
 
     skills = ManyToManyField(CreepSkill)
     saving_throws = ManyToManyField(SavingThrow)
