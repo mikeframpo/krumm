@@ -46,10 +46,16 @@
 
 </div>
 
-<div *ngIf="creeps">
-  <div *ngFor="let creep of creeps">
-    <a routerLink="/creep/id/{{creep.id}}">{{creep.name}}</a>
-  </div>
+<div class="list-group"
+      *ngIf="creeps">
+  <a class="list-group-item list-group-item-action flex-column align-items-start"
+      *ngFor="let creep of creeps" routerLink="/creep/id/{{creep.id}}">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">{{creep.name}}</h5>
+      <p>CR: {{getChallengeRating(creep)}}</p>
+    </div>
+    <p>{{getCreepSubtitle(creep)}}</p>
+  </a>
 </div>
 
 <nav aria-label="Search results" *ngIf="creeps">

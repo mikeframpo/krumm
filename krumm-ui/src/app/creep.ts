@@ -25,5 +25,12 @@ export class Creep {
   cr_den: number;
   special_abilities: Object[];
   actions: Object[];
-}
 
+  get challengeRating(): string {
+    let cr = this.cr_num.toString();
+    if (this.cr_den > 1) {
+      cr += '/' + this.cr_den.toString();
+    }
+    return cr;
+  }
+}

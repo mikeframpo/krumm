@@ -12,7 +12,7 @@ import { Utils } from "./utils";
 })
 export class CreepSearchComponent {
 
-  private creeps: object[];
+  private creeps: Creep[];
   private pages: number[];
   private creepTypes: string[];
 
@@ -77,5 +77,9 @@ export class CreepSearchComponent {
         this.creepTypes
          = types.map(type => Utils.toTitleCase(type));
       });
+  }
+
+  getCreepSubtitle(creep): string {
+    return creep.size + ' ' + creep.type + ', ' + creep.alignment;
   }
 }
