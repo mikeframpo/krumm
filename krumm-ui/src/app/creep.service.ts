@@ -48,7 +48,7 @@ export class CreepService {
     return this.http.get(url)
       .toPromise()
       .then(response => {
-        return (response.json() as SearchResponse);
+        return new SearchResponse(response.json());
       });
   }
 

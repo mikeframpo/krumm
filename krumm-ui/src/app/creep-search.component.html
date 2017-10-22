@@ -52,7 +52,7 @@
       *ngFor="let creep of creeps" routerLink="/creep/id/{{creep.id}}">
     <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1">{{creep.name}}</h5>
-      <p>CR: {{getChallengeRating(creep)}}</p>
+      <p>CR: {{creep.challengeRating}}</p>
     </div>
     <p>{{getCreepSubtitle(creep)}}</p>
   </a>
