@@ -191,8 +191,8 @@ def query_creeps(request):
         creep_objs.append(load_creep_fields(creep, fields))
 
     query_response = {
-        'page': page.number,
-        'num_pages': paginator.num_pages,
+        'num_creeps': paginator.count,
+        'num_creeps_per_page': paginator.per_page,
         'creeps': creep_objs,
     }
 

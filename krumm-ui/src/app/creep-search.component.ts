@@ -13,11 +13,12 @@ import { Utils } from "./utils";
 export class CreepSearchComponent {
 
   private creeps: Creep[];
-  private pages: number[];
+  private num_creeps: number;
+  private num_creeps_per_page: number;
   private creepTypes: string[];
 
   private nameQuery: string;
-  private currentPage: string;
+  private currentPage: number;
   private creepType: string;
   private crMin: string;
   private crMax: string;
@@ -26,11 +27,11 @@ export class CreepSearchComponent {
               private route: ActivatedRoute,
               private router: Router) {
 
-    this.currentPage = "1";
+    this.currentPage = 1;
 
     this.route.queryParamMap.subscribe((queryParamMap: ParamMap) => {
       this.nameQuery = queryParamMap.get('name');
-      this.currentPage = queryParamMap.get('page') || "1";
+      this.currentPage = +queryParamMap.get('page') || 1;
       this.creepType = queryParamMap.get('type');
       this.crMin = queryParamMap.get('crmin');
       this.crMax = queryParamMap.get('crmax');
@@ -54,6 +55,17 @@ export class CreepSearchComponent {
                         });
   }
 
+  setPage(pageNum: number): void {
+    this.router.navigate([],
+      {
+        relativeTo: this.route,
+        queryParams: {
+          page: pageNum
+        },
+        queryParamsHandling: 'merge'
+      });
+  }
+
   queryCreeps(): void {
 
     let searchParams = {
@@ -67,7 +79,8 @@ export class CreepSearchComponent {
     this.creepService.searchCreeps(searchParams)
       .then(response => {
         this.creeps = response.creeps;
-        this.pages = Array(response.num_pages).fill(0).map((x,i) => i+1);
+        this.num_creeps = response.num_creeps;
+        this.num_creeps_per_page = response.num_creeps_per_page;
       });
   }
 
