@@ -1,15 +1,15 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input } from '@angular/core';
 
 import { Creep } from './creep';
 import { Utils } from './utils';
-import { getStatModLookup, skillNames, abilities } from "./stats";
-import { CreepService } from "./creep.service";
+import { getStatModLookup, skillNames, abilities } from './stats';
+import { CreepService } from './creep.service';
 
-const noEditStyle: string = "creep-field-noedit";
+const noEditStyle = 'creep-field-noedit';
 const statNames: string[] = ['STR', 'DEX', 'CON', 'INT', 'WIS', 'CHA'];
 
 @Component({
-  selector: 'stat-block',
+  selector: 'app-stat-block',
   templateUrl: 'statblock.component.html',
   styleUrls: ['statblock.component.css']
 })
@@ -18,19 +18,23 @@ export class StatblockComponent {
   @Input()
   creep: Creep;
 
+  // cached fields
+  skills: string[] = null;
+  saves: string[] = null;
+
   getStatNames(): string[] {
     return statNames;
   }
 
   getStats(): string[] {
-    let stats = [
+    const stats = [
       this.creep.strength,
       this.creep.dexterity,
       this.creep.constitution,
       this.creep.intelligence,
       this.creep.wisdom,
       this.creep.charisma
-    ]
+    ];
     return stats.map(
       item => item.toString() + '(' + getStatModLookup(item) + ')');
   }
@@ -43,13 +47,10 @@ export class StatblockComponent {
     }
   }
 
-  // cache the value
-  skills: string[] = null;
-
   getSkills(): string[] {
     if (!this.skills) {
-      let skills = [];
-      for (let skillName of skillNames) {
+      const skills = [];
+      for (const skillName of skillNames) {
         if (this.creep[skillName]) {
           skills.push({
             name: Utils.toTitleCase(skillName),
@@ -62,18 +63,16 @@ export class StatblockComponent {
     return this.skills;
   }
 
-  saves: string[] = null;
-
   getSaves(): string[] {
     if (!this.saves) {
-      let saves = [];
-      for (let ability of abilities) {
-        let throwKey = ability + '_save';
+      const saves = [];
+      for (const ability of abilities) {
+        const throwKey = ability + '_save';
         if (this.creep[throwKey]) {
           saves.push({
             name: Utils.toTitleCase(ability.slice(0, 3)),
             val: this.toSignedNum(this.creep[throwKey])
-          })
+          });
         }
       }
       this.saves = saves;

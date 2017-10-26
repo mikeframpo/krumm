@@ -1,4 +1,4 @@
-import { Creep } from "./creep";
+import { Creep } from './creep';
 
 export class SearchResponse {
   num_creeps: number;
@@ -9,8 +9,8 @@ export class SearchResponse {
     this.num_creeps = fromJson.num_creeps;
     this.num_creeps_per_page = fromJson.num_creeps_per_page;
     this.creeps = [];
-    for (let i in fromJson.creeps) {
-      let creep = Object.assign(new Creep(), fromJson.creeps[i]);
+    for (const creepJson of fromJson.creeps) {
+      const creep = Object.assign(new Creep(), creepJson);
       this.creeps.push(creep);
     }
   }

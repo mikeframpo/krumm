@@ -30,7 +30,7 @@ const statModLookup = {
   28: '+9',
   29: '+9',
   30: '+10',
-}
+};
 
 export function getStatModLookup(stat: number): string {
   return statModLookup[stat];
@@ -55,7 +55,7 @@ export const skillNames: string[] = [
   'sleight_of_hand',
   'stealth',
   'survival'
-]
+];
 
 export const abilities: string[] = [
   'strength',
@@ -64,4 +64,4 @@ export const abilities: string[] = [
   'intelligence',
   'wisdom',
   'charisma',
-]
+];

@@ -1,10 +1,10 @@
-import { Component, OnInit } from "@angular/core";
-import { CreepService } from "./creep.service";
-import { Creep } from "./creep";
-import { SearchResponse } from "./search-response";
-import { Router, ActivatedRoute, ParamMap, NavigationEnd, NavigationStart } from "@angular/router";
-import { Observable } from "rxjs/Observable";
-import { Utils } from "./utils";
+import { Component, OnInit } from '@angular/core';
+import { CreepService } from './creep.service';
+import { Creep } from './creep';
+import { SearchResponse } from './search-response';
+import { Router, ActivatedRoute, ParamMap, NavigationEnd, NavigationStart } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
+import { Utils } from './utils';
 
 
 @Component({
@@ -12,16 +12,16 @@ import { Utils } from "./utils";
 })
 export class CreepSearchComponent {
 
-  private creeps: Creep[];
-  private num_creeps: number;
-  private num_creeps_per_page: number;
-  private creepTypes: string[];
+  creeps: Creep[];
+  num_creeps: number;
+  num_creeps_per_page: number;
+  creepTypes: string[];
 
-  private nameQuery: string;
-  private currentPage: number;
-  private creepType: string;
-  private crMin: string;
-  private crMax: string;
+  nameQuery: string;
+  currentPage: number;
+  creepType: string;
+  crMin: string;
+  crMax: string;
 
   constructor(private creepService: CreepService,
               private route: ActivatedRoute,
@@ -45,7 +45,7 @@ export class CreepSearchComponent {
     this.router.navigate([],
                         {
                           relativeTo: this.route,
-                          queryParams: { 
+                          queryParams: {
                             name: this.nameQuery || null,
                             type: this.creepType || null,
                             crmin: this.crMin || null,
@@ -68,13 +68,13 @@ export class CreepSearchComponent {
 
   queryCreeps(): void {
 
-    let searchParams = {
+    const searchParams = {
       nameQuery: this.nameQuery,
       page: this.currentPage,
       type: this.creepType,
       crMin: this.crMin,
       crMax: this.crMax,
-    }
+    };
 
     this.creepService.searchCreeps(searchParams)
       .then(response => {

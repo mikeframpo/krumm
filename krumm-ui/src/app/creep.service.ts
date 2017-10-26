@@ -1,10 +1,10 @@
-import { Injectable } from "@angular/core";
-import { Creep } from "./creep";
+import { Injectable } from '@angular/core';
+import { Creep } from './creep';
 
-import { Http } from "@angular/http";
+import { Http } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
-import { SearchResponse } from "./search-response";
+import { SearchResponse } from './search-response';
 
 const creepUrlBase = 'http://127.0.0.1:8000';
 const creepByIdUrl = creepUrlBase + '/creeps/id';
@@ -27,7 +27,7 @@ export class CreepService {
 
   searchCreeps(searchParams): Promise<SearchResponse> {
 
-    let urlParts = [creepQueryUrl];
+    const urlParts = [creepQueryUrl];
     if (searchParams.nameQuery) {
       urlParts.push('&name=' + searchParams.nameQuery.toLowerCase());
     }
@@ -43,7 +43,7 @@ export class CreepService {
     if (searchParams.crMax) {
       urlParts.push('&crmax=' + searchParams.crMax);
     }
-    let url = urlParts.join('');
+    const url = urlParts.join('');
 
     return this.http.get(url)
       .toPromise()

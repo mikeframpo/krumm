@@ -3,5 +3,8 @@
         "**/.git": true
     },
 
-    "editor.tabSize": 2
+    "editor.tabSize": 2,
+
+    "tslint.rulesDirectory": "./node_modules/codelyzer",
+    "typescript.tsdk": "node_modules/typescript/lib"
 }

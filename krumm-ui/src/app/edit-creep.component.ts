@@ -1,20 +1,21 @@
-import { Component, OnInit, Input } from "@angular/core";
-import { Creep } from "./creep";
+import { Component, OnInit, Input } from '@angular/core';
 
-import { Observable } from "rxjs/Observable";
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
-import { NgForm } from "@angular/forms";
+import { NgForm } from '@angular/forms';
+import { Creep } from './creep';
 
 const SIZES = ['Small', 'Medium', 'Large', 'Gargantuan'];
 
 @Component({
-  selector: 'edit-creep',
+  selector: 'app-edit-creep',
   templateUrl: 'edit-creep.component.html',
   styleUrls: ['edit-creep.component.css']
 })
 export class EditCreepComponent implements OnInit {
 
-  private creep: Creep;
+  creep: Creep;
+  nameFocused: boolean;
 
   ngOnInit(): void {
     // TODO: in the future this will check whether the route
@@ -24,13 +25,13 @@ export class EditCreepComponent implements OnInit {
     this.creep = Creep.createNewEdit();
   }
 
-  onSubmit(form: NgForm) : void {
+  onSubmit(form: NgForm): void {
     console.log(form.value);
   }
 
   sizeSearch = (text$: Observable<string>) =>
     text$
       .map(term => SIZES.filter(
-        size => size.toLowerCase().indexOf(term.toLowerCase()) > -1));
+        size => size.toLowerCase().indexOf(term.toLowerCase()) > -1))
 
 }
