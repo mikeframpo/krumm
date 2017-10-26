@@ -58,9 +58,10 @@
       <span *ngIf="creep.languages;else elseBlock">{{creep.languages}}</span>
       <ng-template #elseBlock>-</ng-template>
     </div>
-    <div *ngIf="creep">
+    <div>
       <h4>Challenge</h4>
-      <span>{{creep.challengeRating}}</span>
+      <span *ngIf="creep.cr_num;else elseBlock">{{creep.challengeRating}}</span>
+      <ng-template #elseBlock>-</ng-template>
     </div>
     <svg class="creep-divider" height="5" width="400">
         <polyline points="0,0 400,2.5 0,5"/>

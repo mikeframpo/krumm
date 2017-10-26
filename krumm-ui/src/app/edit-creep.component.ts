@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { Creep } from "./creep";
-import { CREEP_NEWEDIT } from "./creep-newedit";
 
 import { Observable } from "rxjs/Observable";
 import 'rxjs/add/operator/map';
@@ -15,7 +14,6 @@ const SIZES = ['Small', 'Medium', 'Large', 'Gargantuan'];
 })
 export class EditCreepComponent implements OnInit {
 
-  @Input()
   private creep: Creep;
 
   ngOnInit(): void {
@@ -23,7 +21,7 @@ export class EditCreepComponent implements OnInit {
     // contains an ID for an existing creep, in which case
     // load it from the DB.
 
-    //this.creep = Object.assign({}, CREEP_NEWEDIT);
+    this.creep = Creep.createNewEdit();
   }
 
   onSubmit(form: NgForm) : void {
