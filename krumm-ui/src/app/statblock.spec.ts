@@ -36,4 +36,25 @@ describe('Statblock tests', () => {
                                 By.css('.creep-type')).nativeElement;
     expect(elem.innerText).toBeTruthy();
   });
+
+  it('challengeratings', () => {
+
+    comp.creep.cr_num = 1;
+    comp.creep.cr_den = 4;
+    expect(comp.creep.challengeRating).toBe('1/4');
+
+    fixture.detectChanges();
+    let elem: HTMLElement = fixture.debugElement.query(By.css('#challenge')).nativeElement;
+    expect(elem.innerText).toBe('Challenge 1/4');
+
+    comp.creep.cr_num = 10;
+    comp.creep.cr_den = 1;
+    expect(comp.creep.challengeRating).toBe('10');
+
+    comp.creep.cr_num = null;
+    comp.creep.cr_den = null;
+    fixture.detectChanges();
+    elem = fixture.debugElement.query(By.css('#challenge')).nativeElement;
+    expect(elem.innerText).toBe('Challenge -');
+  });
 });

@@ -21,7 +21,7 @@ export class CreepService {
     return this.http.get(url)
       .toPromise()
       .then(response => {
-        return response.json() as Creep;
+        return Object.assign(new Creep(), response.json());
       });
   }
 
