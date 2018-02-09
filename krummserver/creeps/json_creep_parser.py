@@ -43,8 +43,8 @@ def get_hitdice(creep_data, required=True):
 def create_skills():
 
     for skill_name in skill_names:
-        skill, added = Skill.objects.get_or_create(skill=skill_name)
-        print('added skill: ' + skill.skill)
+        skill, added = Skill.objects.get_or_create(value=skill_name, woc=True)
+        print('added skill: ' + skill.value)
 
 skill_names = [
         'acrobatics',
@@ -88,7 +88,9 @@ abilities = [
 def create_abilities():
 
     for ability_name in abilities:
-        ability, added = Ability.objects.get_or_create(ability=ability_name)
+        ability, added = Ability.objects.get_or_create(
+                                                    value=ability_name,
+                                                    woc=True)
         print('Added ability: ' + ability_name)
 
 def get_saving_throws(creep_data):
@@ -150,11 +152,17 @@ def parse_json_creeps(json_path, check_extra_fields=False):
         if 'license' in creep_data.keys():
             continue
 
+        #TODO: might want to manually add the known sizes so they are
+        # entered in a sensible order
         creep_size = get_string(creep_data, 'size')
-        size, added = Size.objects.get_or_create(size=creep_size.lower())
+        size, added = Size.objects.get_or_create(
+                                                value=creep_size.lower(),
+                                                woc=True)
 
         creep_type = get_string(creep_data, 'type')
-        type, added = Type.objects.get_or_create(type=creep_type.lower())
+        type, added = Type.objects.get_or_create(
+                                                value=creep_type.lower(),
+                                                woc=True)
 
         creep_subtype = get_string(creep_data, 'subtype', required=False)
         if creep_subtype is not None:
@@ -165,7 +173,8 @@ def parse_json_creeps(json_path, check_extra_fields=False):
 
         creep_align = get_string(creep_data, 'alignment')
         alignment, added = Alignment.objects.get_or_create(
-                                            alignment=creep_align.lower())
+                                            value=creep_align.lower(),
+                                            woc=True)
 
         armor_class = get_int(creep_data, 'armor_class')
         hit_points = get_int(creep_data, 'hit_points')
@@ -191,12 +200,12 @@ def parse_json_creeps(json_path, check_extra_fields=False):
         creep_skills = get_creep_skills(creep_data)
         creep_skills_obj = list(
                             map(lambda skill:
-                                    (Skill.objects.get(skill=skill[0]), skill[1]),
+                                    (Skill.objects.get(value=skill[0]), skill[1]),
                                 creep_skills))
 
         creep_throws = get_saving_throws(creep_data)
         creep_throws_obj = map(lambda throw:
-                                (Ability.objects.get(ability=throw[0]), throw[1]),   
+                                (Ability.objects.get(value=throw[0]), throw[1]),   
                                     creep_throws)
         
         creep_vuln = get_creep_csvlist(creep_data, 'damage_vulnerabilities')
@@ -236,27 +245,29 @@ def parse_json_creeps(json_path, check_extra_fields=False):
 
         for throw in creep_throws_obj:
             saving_throw, added = SavingThrow.objects.get_or_create(
-                            ability=throw[0], modifier=throw[1])
+                                        ability=throw[0], modifier=throw[1])
             creep.saving_throws.add(saving_throw)
 
         for vuln in creep_vuln:
-            damage, added = Damage.objects.get_or_create(damage=vuln)
+            damage, added = Damage.objects.get_or_create(value=vuln, woc=True)
             creep.damage_vulnerabilities.add(damage)
 
         for resist in creep_resist:
-            damage, added = Damage.objects.get_or_create(damage=resist)
+            damage, added = Damage.objects.get_or_create(value=resist, woc=True)
             creep.damage_resistances.add(damage)
 
         for immun in creep_immun:
-            damage, added = Damage.objects.get_or_create(damage=immun)
+            damage, added = Damage.objects.get_or_create(value=immun, woc=True)
             creep.damage_immunities.add(damage)
 
         for immun in condition_immun:
-            condition, added = Condition.objects.get_or_create(condition=immun)
+            condition, added = Condition.objects.get_or_create(
+                                                            value=immun,
+                                                            woc=True)
             creep.condition_immunities.add(condition)
 
         for lang in creep_langs:
-            lang, added = Language.objects.get_or_create(language=lang)
+            lang, added = Language.objects.get_or_create(value=lang, woc=True)
             creep.languages.add(lang)
 
         special_abilities = create_actions(creep_special_abilities)

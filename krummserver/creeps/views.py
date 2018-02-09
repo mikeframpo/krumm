@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, Http404
 from django.core.paginator import Paginator
 
-from .models import Creep, Type
+from .models import Creep, Type, Size
 
 import string
 import json
@@ -12,7 +12,7 @@ def load_damage_field(creep, field, creep_obj):
 
     damage_types = []
     for damage in getattr(creep, field).order_by('id'):
-        damage_types.append(damage.damage)
+        damage_types.append(damage.value)
 
     damage_str = ', '.join(damage_types)
     creep_obj[field] = damage_str
@@ -51,16 +51,16 @@ def load_creep_fields(creep, fields):
     if has_field('name'):
         creep_obj['name'] = string.capwords(creep.name)
     if has_field('size'):
-        creep_obj['size'] = string.capwords(creep.size.size)
+        creep_obj['size'] = string.capwords(creep.size.value)
     if has_field('type'):
-        creep_obj['type'] = creep.type.type
+        creep_obj['type'] = creep.type.value
     if has_field('subtype'):
         if creep.subtype:
             creep_obj['subtype'] = creep.subtype.subtype
         else:
             creep_obj['subtype'] = ''
     if has_field('alignment'):
-        creep_obj['alignment'] = creep.alignment.alignment
+        creep_obj['alignment'] = creep.alignment.value
 
     if has_field('armor_class'):
         creep_obj['armor_class'] = creep.armor_class
@@ -87,12 +87,12 @@ def load_creep_fields(creep, fields):
 
     if has_field('saving_throws'):
         for st in creep.saving_throws.order_by('ability'):
-            creep_obj[st.ability.ability + '_save'] \
+            creep_obj[st.ability.value + '_save'] \
                     = st.modifier
 
     if has_field('skills'):
         for creep_skill in creep.skills.order_by('skill'):
-            creep_obj[creep_skill.skill.skill] = creep_skill.modifier
+            creep_obj[creep_skill.skill.value] = creep_skill.modifier
 
     if has_field('damage_vulnerabilities'):
         load_damage_field(creep, 'damage_vulnerabilities', creep_obj)
@@ -106,7 +106,7 @@ def load_creep_fields(creep, fields):
     if has_field('condition_immunities'):
         conditions = []
         for condition in creep.condition_immunities.order_by('id'):
-            conditions.append(condition.condition)
+            conditions.append(condition.value)
         conditions_str = ', '.join(conditions)
         creep_obj['condition_immunities'] = conditions_str
 
@@ -116,7 +116,7 @@ def load_creep_fields(creep, fields):
     if has_field('languages'):
         languages = []
         for language in creep.languages.order_by('id'):
-            languages.append(language.language)
+            languages.append(language.value)
         languages_str = ', '.join(languages)
         creep_obj['languages'] = languages_str
 
@@ -201,8 +201,11 @@ def query_creeps(request):
 
 def query_meta(request, field_name):
 
-    if field_name == 'types':
-        types = [ctype.type for ctype in Type.objects.all()]
+    if field_name == 'sizes':
+        sizes = [size.value for size in Size.objects.filter(woc=True)]
+        return HttpResponse(json.dumps(sizes))
+    elif field_name == 'types':
+        types = [ctype.value for ctype in Type.objects.filter(woc=True)]
         return HttpResponse(json.dumps(types))
     else:
         raise Http404('Unknown meta field name %s' % field_name)

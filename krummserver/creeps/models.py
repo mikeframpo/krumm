@@ -8,40 +8,47 @@ from django.db.models import (Model, CharField, ForeignKey, IntegerField,
 CHARFIELD_DEFAULT = 100
 ACTION_DESC_MAX = 2000
 
-class Size(Model):
-    size=CharField(max_length=CHARFIELD_DEFAULT)
+class CustomCharField(Model):
+    woc=BooleanField(default=False)
+    value=CharField(max_length=CHARFIELD_DEFAULT)
 
-class Type(Model):
-    type=CharField(max_length=CHARFIELD_DEFAULT)
+    class Meta:
+        abstract=True
+
+class Size(CustomCharField):
+    pass
+
+class Type(CustomCharField):
+    pass
 
 class Subtype(Model):
     subtype=CharField(max_length=CHARFIELD_DEFAULT)
 
-class Alignment(Model):
-    alignment=CharField(max_length=CHARFIELD_DEFAULT)
+class Alignment(CustomCharField):
+    pass
 
-class Skill(Model):
-    skill=CharField(max_length=CHARFIELD_DEFAULT)
+class Skill(CustomCharField):
+    pass
 
 class CreepSkill(Model):
     skill=ForeignKey(Skill, on_delete=CASCADE)
     modifier=IntegerField()
 
-class Ability(Model):
-    ability=CharField(max_length=CHARFIELD_DEFAULT)
+class Ability(CustomCharField):
+    pass
 
 class SavingThrow(Model):
     ability=ForeignKey(Ability, on_delete=CASCADE)
     modifier=IntegerField()
 
-class Damage(Model):
-    damage=CharField(max_length=CHARFIELD_DEFAULT)
+class Damage(CustomCharField):
+    pass
 
-class Condition(Model):
-    condition=CharField(max_length=CHARFIELD_DEFAULT)
+class Condition(CustomCharField):
+    pass
 
-class Language(Model):
-    language=CharField(max_length=CHARFIELD_DEFAULT)
+class Language(CustomCharField):
+    pass
 
 class Action(Model):
     name=CharField(max_length=CHARFIELD_DEFAULT)

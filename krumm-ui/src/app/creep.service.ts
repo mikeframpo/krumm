@@ -9,7 +9,9 @@ import { SearchResponse } from './search-response';
 const creepUrlBase = 'http://127.0.0.1:8000';
 const creepByIdUrl = creepUrlBase + '/creeps/id';
 const creepQueryUrl = creepUrlBase + '/creeps/query?fields=id,name,size,type,alignment,challenge_rating';
+
 const creepTypesUrl = creepUrlBase + '/creeps/meta/types';
+const creepSizesUrl = creepUrlBase + '/creeps/meta/sizes';
 
 @Injectable()
 export class CreepService {
@@ -54,6 +56,12 @@ export class CreepService {
 
   getCreatureTypes(): Promise<string[]> {
     return this.http.get(creepTypesUrl)
+      .toPromise()
+      .then(response => response.json() as string[]);
+  }
+
+  getCreatureSizes(): Promise<string[]> {
+    return this.http.get(creepSizesUrl)
       .toPromise()
       .then(response => response.json() as string[]);
   }

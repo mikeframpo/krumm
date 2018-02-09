@@ -4,38 +4,58 @@
   <div class="col-6">
   <form #editForm="ngForm" (ngSubmit)="onSubmit(editForm)">
 
-    <div class="form-group row">
-      <label for="name" class="form-label col-4">Name</label>
-      <input id="name" name="name" type="text" required placeholder="Creature name"
-            class="form-control col-8" [(ngModel)]="creep.name" #nameElem #name="ngModel"
-            (focus)="nameFocused=true" (blur)="nameFocused=false">
-      <p [hidden]="!nameFocused || name.valid" class="alert alert-danger">
-        Name is required
-      </p>
-    </div>
+    <div role="tablist">
+      <div class="card">
 
-    <div class="form-group row">
-      <label for="size" class="form-label col-4">Size</label>
-      <input id="size" name="size" type="text" required placeholder="Size"
-            class="form-control col-8" [(ngModel)]="creep.size" [ngbTypeahead]="sizeSearch">
-    </div>
+        <div class="card-header" role="tab">
+          <h5 class="mb-0">
+            <a data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              Name - Type - Alignment
+            </a>
+          </h5>
+        </div>
 
-    <div class="form-group row">
-      <label for="type" class="form-label col-4">Type</label>
-      <input id="type" name="type" type="text" required placeholder="Type"
-            class="form-control col-8" [(ngModel)]="creep.type">
-    </div>
+        <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+          <div class="card-body">
+            
+              <div class="form-group row">
+                  <label for="name" class="form-label col-4">Name</label>
+                  <input id="name" name="name" type="text" required placeholder="Creature name"
+                        class="form-control col-8" [(ngModel)]="creep.name" #nameElem #name="ngModel"
+                        (focus)="nameFocused=true" (blur)="nameFocused=false">
+                  <p [hidden]="!nameFocused || name.valid" class="alert alert-danger col">
+                    Name is required
+                  </p>
+                </div>
+            
+                <div class="form-group row">
+                  <label for="size" class="form-label col-4">Size</label>
+                  <input id="size" name="size" type="text" required placeholder="Size"
+                        class="form-control col-8" [(ngModel)]="creep.size" [ngbTypeahead]="sizeSearch">
+                </div>
+            
+                <div class="form-group row">
+                  <label for="type" class="form-label col-4">Type</label>
+                  <input id="type" name="type" type="text" required placeholder="Type"
+                        class="form-control col-8" [(ngModel)]="creep.type" [ngbTypeahead]="typeSearch">
+                </div>
+            
+                <div class="form-group row">
+                  <label for="subtype" class="form-label col-4">Subtype</label>
+                  <input id="subtype" name="subtype" type="text" placeholder="Subtype"
+                        class="form-control col-8" [(ngModel)]="creep.subtype">
+                </div>
+            
+                <div class="form-group row">
+                  <label for="alignment" class="form-label col-4">Alignment</label>
+                  <input id="alignment" name="alignment" type="text" required placeholder="Alignment"
+                        class="form-control col-8" [(ngModel)]="creep.alignment">
+                </div>
 
-    <div class="form-group row">
-      <label for="subtype" class="form-label col-4">Subtype</label>
-      <input id="subtype" name="subtype" type="text" placeholder="Subtype"
-            class="form-control col-8" [(ngModel)]="creep.subtype">
-    </div>
+          </div>
+        </div>
 
-    <div class="form-group row">
-      <label for="alignment" class="form-label col-4">Alignment</label>
-      <input id="alignment" name="alignment" type="text" required placeholder="Alignment"
-            class="form-control col-8" [(ngModel)]="creep.alignment">
+      </div>
     </div>
 
     <button type="submit" class="btn btn-success"

@@ -37,7 +37,7 @@
     <svg class="creep-divider" height="5" width="400">
         <polyline points="0,0 400,2.5 0,5"/>
     </svg>
-    <div *ngIf="getSaves() && getSaves.length > 0">
+    <div *ngIf="getSaves() && getSaves().length > 0">
       <h4>Saving Throws</h4>
       <span *ngFor="let save of getSaves(); let isLast = last">
         {{save.name}} {{save.val}}<span *ngIf="!isLast">,</span>

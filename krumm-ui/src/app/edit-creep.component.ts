@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { NgForm } from '@angular/forms';
 import { Creep } from './creep';
+import { CreepService } from './creep.service';
 
 const SIZES = ['Small', 'Medium', 'Large', 'Gargantuan'];
 
@@ -17,6 +18,11 @@ export class EditCreepComponent implements OnInit {
   creep: Creep;
   nameFocused: boolean;
 
+  sizeSearch = this.createTypeahead(this.creepService.getCreatureSizes());
+  typeSearch = this.createTypeahead(this.creepService.getCreatureTypes());
+
+  constructor(private creepService: CreepService) { }
+
   ngOnInit(): void {
     // TODO: in the future this will check whether the route
     // contains an ID for an existing creep, in which case
@@ -29,9 +35,14 @@ export class EditCreepComponent implements OnInit {
     console.log(form.value);
   }
 
-  sizeSearch = (text$: Observable<string>) =>
-    text$
-      .map(term => SIZES.filter(
-        size => size.toLowerCase().indexOf(term.toLowerCase()) > -1))
+  createTypeahead(fetcher: Promise<string[]>):
+    (text$: Observable<string>) => Observable<string[]> {
 
+    let fields: string[] = [];
+    fetcher.then(result => fields = result);
+
+    return (text$: Observable<string>) =>
+      text$.map(term =>
+        fields.filter(size => size.toLowerCase().indexOf(term.toLowerCase()) > -1));
+  }
 }
