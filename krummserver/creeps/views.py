@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, Http404
 from django.core.paginator import Paginator
 
-from .models import Creep, Type, Size
+from .models import Creep, Type, Size, Alignment
 
 import string
 import json
@@ -207,6 +207,9 @@ def query_meta(request, field_name):
     elif field_name == 'types':
         types = [ctype.value for ctype in Type.objects.filter(woc=True)]
         return HttpResponse(json.dumps(types))
+    elif field_name == 'alignments':
+        aligns = [align.value for align in Alignment.objects.filter(woc=True)]
+        return HttpResponse(json.dumps(aligns))
     else:
         raise Http404('Unknown meta field name %s' % field_name)
 

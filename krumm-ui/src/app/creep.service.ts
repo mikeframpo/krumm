@@ -5,13 +5,18 @@ import { Http } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 import { SearchResponse } from './search-response';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
+import { Utils } from './utils';
 
 const creepUrlBase = 'http://127.0.0.1:8000';
 const creepByIdUrl = creepUrlBase + '/creeps/id';
 const creepQueryUrl = creepUrlBase + '/creeps/query?fields=id,name,size,type,alignment,challenge_rating';
 
-const creepTypesUrl = creepUrlBase + '/creeps/meta/types';
-const creepSizesUrl = creepUrlBase + '/creeps/meta/sizes';
+const metaUrlBase = '/creeps/meta/';
+const creepTypesUrl = creepUrlBase + metaUrlBase + 'types';
+const creepSizesUrl = creepUrlBase + metaUrlBase + 'sizes';
+const alignmentsUrl = creepUrlBase + metaUrlBase + 'alignments';
 
 @Injectable()
 export class CreepService {
@@ -54,15 +59,21 @@ export class CreepService {
       });
   }
 
-  getCreatureTypes(): Promise<string[]> {
-    return this.http.get(creepTypesUrl)
-      .toPromise()
-      .then(response => response.json() as string[]);
+  getFieldList(url: string): Observable<string[]> {
+    return this.http.get(url)
+      .map(response => (response.json() as string[])
+        .map(item => Utils.toTitleCase(item)));
   }
 
-  getCreatureSizes(): Promise<string[]> {
-    return this.http.get(creepSizesUrl)
-      .toPromise()
-      .then(response => response.json() as string[]);
+  getCreatureTypes(): Observable<string[]> {
+    return this.getFieldList(creepTypesUrl);
+  }
+
+  getCreatureSizes(): Observable<string[]> {
+    return this.getFieldList(creepSizesUrl);
+  }
+
+  getAlignments(): Observable<string[]> {
+    return this.getFieldList(alignmentsUrl);
   }
 }

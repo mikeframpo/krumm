@@ -86,10 +86,7 @@ export class CreepSearchComponent {
 
   getCreepTypes(): void {
     this.creepService.getCreatureTypes()
-      .then(types => {
-        this.creepTypes
-         = types.map(type => Utils.toTitleCase(type));
-      });
+      .subscribe(creepTypes => this.creepTypes = creepTypes);
   }
 
   getCreepSubtitle(creep): string {

@@ -49,7 +49,7 @@
                 <div class="form-group row">
                   <label for="alignment" class="form-label col-4">Alignment</label>
                   <input id="alignment" name="alignment" type="text" required placeholder="Alignment"
-                        class="form-control col-8" [(ngModel)]="creep.alignment">
+                        class="form-control col-8" [(ngModel)]="creep.alignment" [ngbTypeahead]="alignmentSearch">
                 </div>
 
           </div>

@@ -40,6 +40,20 @@ def get_hitdice(creep_data, required=True):
         r'(?P<num>[0-9]+)d(?P<type>[0-9]+)', val)
     return match['num'], match['type']
 
+sizes = [
+        'tiny',
+        'small',
+        'medium',
+        'large',
+        'huge',
+        'gargantuan'
+]
+
+def create_sizes():
+    for size_name in sizes:
+        size, added = Size.objects.get_or_create(value=size_name, woc=True)
+        print('added size: ' + size.value)
+
 def create_skills():
 
     for skill_name in skill_names:
@@ -93,6 +107,25 @@ def create_abilities():
                                                     woc=True)
         print('Added ability: ' + ability_name)
 
+alignments = [
+    'lawful good',
+    'neutral good',
+    'chaotic good',
+    'lawful neutral',
+    'neutral',
+    'chaotic neutral',
+    'lawful evil',
+    'neutral evil',
+    'chaotic evil'
+]
+
+def create_alignments():
+    for align in alignments:
+        alignment, added = Alignment.objects.get_or_create(
+                                            value=align,
+                                            woc=True)
+        print('Added alignment: ' + align)
+
 def get_saving_throws(creep_data):
 
     creep_throw_names = list(filter(
@@ -143,8 +176,10 @@ def create_actions(actions):
 
 def parse_json_creeps(json_path, check_extra_fields=False):
 
+    create_sizes()
     create_skills()
     create_abilities()
+    create_alignments()
 
     parsed = json.load(open(json_path))
     for creep_data in parsed:
@@ -152,12 +187,8 @@ def parse_json_creeps(json_path, check_extra_fields=False):
         if 'license' in creep_data.keys():
             continue
 
-        #TODO: might want to manually add the known sizes so they are
-        # entered in a sensible order
         creep_size = get_string(creep_data, 'size')
-        size, added = Size.objects.get_or_create(
-                                                value=creep_size.lower(),
-                                                woc=True)
+        size = Size.objects.get(value=creep_size.lower())
 
         creep_type = get_string(creep_data, 'type')
         type, added = Type.objects.get_or_create(
@@ -172,9 +203,13 @@ def parse_json_creeps(json_path, check_extra_fields=False):
             subtype = None
 
         creep_align = get_string(creep_data, 'alignment')
-        alignment, added = Alignment.objects.get_or_create(
-                                            value=creep_align.lower(),
-                                            woc=True)
+
+        try:
+            alignment = Alignment.objects.get(value=creep_align.lower())
+        except:
+            alignment, added = Alignment.objects.get_or_create(
+                                                value=creep_align.lower(),
+                                                woc=False)
 
         armor_class = get_int(creep_data, 'armor_class')
         hit_points = get_int(creep_data, 'hit_points')

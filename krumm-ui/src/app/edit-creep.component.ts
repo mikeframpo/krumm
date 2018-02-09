@@ -6,8 +6,6 @@ import { NgForm } from '@angular/forms';
 import { Creep } from './creep';
 import { CreepService } from './creep.service';
 
-const SIZES = ['Small', 'Medium', 'Large', 'Gargantuan'];
-
 @Component({
   selector: 'app-edit-creep',
   templateUrl: 'edit-creep.component.html',
@@ -20,6 +18,7 @@ export class EditCreepComponent implements OnInit {
 
   sizeSearch = this.createTypeahead(this.creepService.getCreatureSizes());
   typeSearch = this.createTypeahead(this.creepService.getCreatureTypes());
+  alignmentSearch = this.createTypeahead(this.creepService.getAlignments());
 
   constructor(private creepService: CreepService) { }
 
@@ -35,11 +34,11 @@ export class EditCreepComponent implements OnInit {
     console.log(form.value);
   }
 
-  createTypeahead(fetcher: Promise<string[]>):
+  createTypeahead(fetcher: Observable<string[]>):
     (text$: Observable<string>) => Observable<string[]> {
 
     let fields: string[] = [];
-    fetcher.then(result => fields = result);
+    fetcher.subscribe(result => fields = result);
 
     return (text$: Observable<string>) =>
       text$.map(term =>
