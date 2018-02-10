@@ -45,8 +45,8 @@ export class Creep {
     creep.alignment = 'Neutral';
     creep.armor_class = 10;
     creep.hit_points = 1;
-    creep.hit_dice = null;
-    creep.speed = '25';
+    creep.hit_dice = '1d6';
+    creep.speed = '25 ft';
     creep.strength = 10;
     creep.dexterity = 10;
     creep.constitution = 10;

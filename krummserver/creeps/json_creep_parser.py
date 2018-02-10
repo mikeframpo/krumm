@@ -206,7 +206,7 @@ def parse_json_creeps(json_path, check_extra_fields=False):
 
         try:
             alignment = Alignment.objects.get(value=creep_align.lower())
-        except:
+        except Alignment.DoesNotExist:
             alignment, added = Alignment.objects.get_or_create(
                                                 value=creep_align.lower(),
                                                 woc=False)

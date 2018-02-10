@@ -26,8 +26,8 @@ export class StatblockComponent {
     return statNames;
   }
 
-  getStats(): string[] {
-    const stats = [
+  getStats(): object[] {
+    const statVals = [
       this.creep.strength,
       this.creep.dexterity,
       this.creep.constitution,
@@ -35,8 +35,20 @@ export class StatblockComponent {
       this.creep.wisdom,
       this.creep.charisma
     ];
+    const stats = [];
+    for (let iStat = 0; iStat < statVals.length; iStat++) {
+      stats.push({
+        name: statNames[iStat],
+        val: statVals[iStat]
+      });
+    }
+    return stats;
+  }
+
+  getStatsStr(): string[] {
+    const stats = this.getStats();
     return stats.map(
-      item => item.toString() + '(' + getStatModLookup(item) + ')');
+      item => item['val'].toString() + '(' + getStatModLookup(item['val']) + ')');
   }
 
   private toSignedNum(val: number): string {
