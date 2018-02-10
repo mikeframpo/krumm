@@ -10,11 +10,11 @@
         <div class="card-header" role="tab">
           <h5 class="mb-0">
             <a data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-              Name block
+              Name and alignment
             </a>
           </h5>
         </div>
-        <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+        <div id="collapseOne" class="collapse" role="tabpanel" data-parent="#accordion">
           <div class="card-body">
             
             <div class="form-group row">
@@ -59,11 +59,11 @@
         <div class="card-header" role="tab">
           <h5 class="mb-0">
             <a data-toggle="collapse" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-              AC block
+              Basic attribites
             </a>
           </h5>
         </div>
-        <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+        <div id="collapseTwo" class="collapse" role="tabpanel" data-parent="#accordion">
           <div class="card-body">
 
             <div class="form-group row">
@@ -102,34 +102,53 @@
             </a>
           </h5>
         </div>
-        <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+        <div id="collapseThree" class="collapse" role="tabpanel" data-parent="#accordion">
           <div class="card-body">
 
             <div *ngIf="creep" class="row">
               <div class="col-4 text-center">
                 <label>STR</label>
-                <input name="stat-str" type="number" class="form-control" [(ngModel)]="creep.strength">
+                <input name="stat-str" type="number" min="1" class="form-control" [(ngModel)]="creep.strength">
               </div>
               <div class="col-4 text-center">
                 <label>DEX</label>
-                <input name="stat-dex" type="number" class="form-control" [(ngModel)]="creep.dexterity">
+                <input name="stat-dex" type="number" min="1" class="form-control" [(ngModel)]="creep.dexterity">
               </div>
               <div class="col-4 text-center">
                 <label>CON</label>
-                <input name="stat-con" type="number" class="form-control" [(ngModel)]="creep.constitution">
+                <input name="stat-con" type="number" min="1" class="form-control" [(ngModel)]="creep.constitution">
               </div>
               <div class="col-4 text-center">
                 <label>INT</label>
-                <input name="stat-int" type="number" class="form-control" [(ngModel)]="creep.intelligence">
+                <input name="stat-int" type="number" min="1" class="form-control" [(ngModel)]="creep.intelligence">
               </div>
               <div class="col-4 text-center">
                 <label>WIS</label>
-                <input name="stat-wis" type="number" class="form-control" [(ngModel)]="creep.wisdom">
+                <input name="stat-wis" type="number" min="1" class="form-control" [(ngModel)]="creep.wisdom">
               </div>
               <div class="col-4 text-center">
                 <label>CHA</label>
-                <input name="stat-cha" type="number" class="form-control" [(ngModel)]="creep.charisma">
+                <input name="stat-cha" type="number" min="1" class="form-control" [(ngModel)]="creep.charisma">
               </div>
+            </div>
+
+          </div>
+        </div>
+      </div>  
+
+      <div class="card">
+        <div class="card-header" role="tab">
+          <h5 class="mb-0">
+            <a data-toggle="collapse" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+              Skills and traits
+            </a>
+          </h5>
+        </div>
+        <div id="collapseFour" class="collapse show" role="tabpanel" data-parent="#accordion">
+          <div class="card-body">
+
+            <div class="form-group row">
+              <label for="saving-throws" class="form-label col-4">Saving throws</label>
             </div>
 
           </div>
